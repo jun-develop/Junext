@@ -1,0 +1,42 @@
+# dependencies
+/node_modules
+
+# next.js
+/.next/
+/out/
+/build
+next-env.d.ts
+*.tsbuildinfo
+
+# env: only the example is committed
+.env*
+!.env.example
+
+# tests
+/coverage
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# logs
+*.log
+.pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# editors and local tooling
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+.claude/settings.local.json
+
+# keys
+*.pem
+
+# internal design doc
+/plan.md
