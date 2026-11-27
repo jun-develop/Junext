@@ -1,0 +1,26 @@
+{
+  "common": {
+    "app_name": "Junext"
+  },
+  "home": {
+    "title": "Junext is running",
+    "description": "Sign-in and features come next."
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalid_type": "Invalid value",
+    "invalid_value": "Choose a valid option",
+    "invalid": "Invalid value",
+    "too_small_string": "Must be at least {limit, plural, one {# character} other {# characters}}",
+    "too_big_string": "Must be at most {limit, plural, one {# character} other {# characters}}",
+    "too_small_number": "Must be at least {limit}",
+    "too_big_number": "Must be at most {limit}",
+    "too_small_array": "Select at least {limit, plural, one {# item} other {# items}}",
+    "too_big_array": "Select at most {limit, plural, one {# item} other {# items}}",
+    "invalid_format_email": "Enter a valid email address",
+    "invalid_format_url": "Enter a valid URL",
+    "invalid_format_uuid": "Invalid identifier",
+    "invalid_format_regex": "Invalid format",
+    "invalid_format": "Invalid format"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "common": {
+    "app_name": "Junext"
+  },
+  "home": {
+    "title": "Junext đang chạy",
+    "description": "Đăng nhập và các tính năng sẽ có ở bước tiếp theo."
+  },
+  "validation": {
+    "required": "Trường này là bắt buộc",
+    "invalid_type": "Giá trị không hợp lệ",
+    "invalid_value": "Vui lòng chọn một giá trị hợp lệ",
+    "invalid": "Giá trị không hợp lệ",
+    "too_small_string": "Tối thiểu {limit} ký tự",
+    "too_big_string": "Tối đa {limit} ký tự",
+    "too_small_number": "Giá trị tối thiểu là {limit}",
+    "too_big_number": "Giá trị tối đa là {limit}",
+    "too_small_array": "Chọn ít nhất {limit} mục",
+    "too_big_array": "Chọn tối đa {limit} mục",
+    "invalid_format_email": "Email không hợp lệ",
+    "invalid_format_url": "URL không hợp lệ",
+    "invalid_format_uuid": "Mã định danh không hợp lệ",
+    "invalid_format_regex": "Sai định dạng",
+    "invalid_format": "Sai định dạng"
+  }
+}

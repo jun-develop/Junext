@@ -1,0 +1,7 @@
+pnpm-lock.yaml
+.next
+next-env.d.ts
+plan.md
+# shadcn output keeps its own style so `shadcn add --overwrite` diffs stay readable
+src/components/ui
+src/hooks/use-mobile.ts
