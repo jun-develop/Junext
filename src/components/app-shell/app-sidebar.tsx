@@ -19,17 +19,23 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import type { PermissionCode } from '@/lib/auth/session';
+import type { SidebarCollapsible, SidebarVariant } from './layout-preferences';
 import { activeNavItem, visibleNavGroups } from './nav-items';
 
-type AppSidebarProps = { footer: ReactNode; permissions: PermissionCode[] };
+type AppSidebarProps = {
+  footer: ReactNode;
+  permissions: PermissionCode[];
+  variant: SidebarVariant;
+  collapsible: SidebarCollapsible;
+};
 
-export function AppSidebar({ footer, permissions }: AppSidebarProps) {
+export function AppSidebar({ footer, permissions, variant, collapsible }: AppSidebarProps) {
   const t = useTranslations();
   const { setOpenMobile } = useSidebar();
   const active = activeNavItem(usePathname());
 
   return (
-    <Sidebar collapsible="icon" variant="inset">
+    <Sidebar collapsible={collapsible} variant={variant}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -51,7 +57,7 @@ export function AppSidebar({ footer, permissions }: AppSidebarProps) {
         {visibleNavGroups(permissions).map((group) => (
           <SidebarGroup key={group.label}>
             <SidebarGroupLabel>{t(`nav.groups.${group.label}`)}</SidebarGroupLabel>
-            <SidebarMenu>
+            <SidebarMenu className="gap-1">
               {group.items.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton

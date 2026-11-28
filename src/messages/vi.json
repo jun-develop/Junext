@@ -39,7 +39,31 @@
     "command_placeholder": "Nhập lệnh hoặc tìm kiếm…",
     "no_results": "Không có kết quả.",
     "rows_per_page": "Số dòng mỗi trang",
-    "page_of": "Trang {page} / {total}"
+    "page_of": "Trang {page} / {total}",
+    "settings": {
+      "open": "Mở cài đặt giao diện",
+      "title": "Cài đặt giao diện",
+      "description": "Điều chỉnh giao diện và bố cục theo ý bạn.",
+      "theme": "Chế độ màu",
+      "sidebar": "Kiểu sidebar",
+      "layout": "Bố cục",
+      "reset": "Đặt lại",
+      "themes": {
+        "system": "Hệ thống",
+        "light": "Sáng",
+        "dark": "Tối"
+      },
+      "sidebars": {
+        "inset": "Lồng",
+        "floating": "Nổi",
+        "sidebar": "Sát mép"
+      },
+      "layouts": {
+        "default": "Mặc định",
+        "icon": "Thu gọn",
+        "offcanvas": "Toàn màn hình"
+      }
+    }
   },
   "nav": {
     "dashboard": "Tổng quan",

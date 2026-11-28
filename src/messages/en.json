@@ -39,7 +39,31 @@
     "command_placeholder": "Type a command or search…",
     "no_results": "No results found.",
     "rows_per_page": "Rows per page",
-    "page_of": "Page {page} of {total}"
+    "page_of": "Page {page} of {total}",
+    "settings": {
+      "open": "Open theme settings",
+      "title": "Theme Settings",
+      "description": "Adjust the appearance and layout to suit your preferences.",
+      "theme": "Theme",
+      "sidebar": "Sidebar",
+      "layout": "Layout",
+      "reset": "Reset",
+      "themes": {
+        "system": "System",
+        "light": "Light",
+        "dark": "Dark"
+      },
+      "sidebars": {
+        "inset": "Inset",
+        "floating": "Floating",
+        "sidebar": "Sidebar"
+      },
+      "layouts": {
+        "default": "Default",
+        "icon": "Compact",
+        "offcanvas": "Full layout"
+      }
+    }
   },
   "nav": {
     "dashboard": "Dashboard",

@@ -5,18 +5,36 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import type { PermissionCode } from '@/lib/auth/session';
+import { cn } from '@/lib/utils';
+import type { SidebarVariant } from './layout-preferences';
 
-type AppHeaderProps = { permissions: PermissionCode[]; profile: ReactNode };
+type AppHeaderProps = {
+  permissions: PermissionCode[];
+  variant: SidebarVariant;
+  settings: ReactNode;
+  profile: ReactNode;
+};
 
-export function AppHeader({ permissions, profile }: AppHeaderProps) {
+export function AppHeader({ permissions, variant, settings, profile }: AppHeaderProps) {
+  // Inset content already sits in its own rounded card; the other styles need a line under the header.
+  const isInset = variant === 'inset';
+
   return (
-    <header className="bg-background/80 sticky top-0 z-20 flex h-16 shrink-0 items-center gap-3 rounded-t-xl px-4 backdrop-blur-lg sm:gap-4">
+    <header
+      className={cn(
+        'bg-background/80 sticky top-0 z-20 flex h-16 shrink-0 items-center gap-3 px-4 backdrop-blur-lg sm:gap-4',
+        isInset && 'rounded-t-xl',
+        variant === 'floating' && 'rounded-t-lg border-b',
+        variant === 'sidebar' && 'border-b',
+      )}
+    >
       <SidebarTrigger variant="outline" />
       <Separator orientation="vertical" className="my-auto data-vertical:h-6" />
       <CommandMenu permissions={permissions} />
       <div className="ml-auto flex items-center gap-1 sm:gap-2">
         <LocaleSwitcher />
         <ThemeToggle />
+        {settings}
         {profile}
       </div>
     </header>
