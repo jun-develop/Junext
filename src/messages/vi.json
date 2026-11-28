@@ -1,10 +1,34 @@
 {
   "common": {
-    "app_name": "Junext"
+    "app_name": "Junext",
+    "app_subtitle": "Trang quản trị",
+    "app_tagline": "Quản lý người dùng, vai trò và quyền cho Jungo API của bạn.",
+    "language": "Đổi ngôn ngữ",
+    "locale_names": {
+      "en": "English",
+      "vi": "Tiếng Việt"
+    },
+    "theme": {
+      "label": "Đổi giao diện",
+      "light": "Sáng",
+      "dark": "Tối",
+      "system": "Theo hệ thống"
+    }
+  },
+  "nav": {
+    "label": "Danh mục",
+    "dashboard": "Tổng quan"
   },
   "dashboard": {
     "title": "Tổng quan",
-    "greeting": "Chào mừng trở lại, {name}"
+    "greeting": "Chào mừng trở lại, {name}",
+    "account": "Tài khoản",
+    "active": "Đang hoạt động",
+    "inactive": "Không hoạt động",
+    "session_started": "Phiên bắt đầu lúc",
+    "session_ip": "Từ IP {ip}",
+    "permissions": "Quyền",
+    "permission_count": "{count, plural, =0 {Không có quyền} other {# quyền}}"
   },
   "api_errors": {
     "invalid_credentials": "Email hoặc mật khẩu không đúng",

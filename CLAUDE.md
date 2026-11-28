@@ -123,7 +123,7 @@ export async function createRole(input: CreateRoleInput): Promise<Role> {
 ### UI
 
 - Reuse `src/components/ui`: Alert, AlertDialog (confirmations), Badge, Breadcrumb, Button, Card, Dialog, DropdownMenu, Empty (empty states), Field (form fields and errors), Input, Select, Sheet, Sidebar, Skeleton (loading), Table and Pagination, Tabs, Tooltip, and `Toaster` from `ui/sonner`.
-- No shared page header, data table or app shell exists yet. Build it once in `src/components/` when the first feature needs it, then reuse it. `Toaster` must be mounted in the root layout before the first toast.
+- The app shell lives in `src/components/app-shell/`; a feature adds its sidebar entry to `NAV_ITEMS` in `nav-items.ts` and its label under `nav` in the shared messages. `ThemeToggle` and `LocaleSwitcher` are in `src/components/`. No shared page header or data table exists yet: build it once in `src/components/` when the first feature needs it, then reuse it. `Toaster` must be mounted in the root layout before the first toast.
 - A component used by only one feature stays in that feature. Move it to `src/components/` when a second feature needs it.
 - Colours come from theme tokens (`bg-background`, `text-muted-foreground`). No hex colours. Arbitrary Tailwind values need a comment explaining why.
 - Icons from `lucide-react`. Use semantic HTML, labelled controls, visible focus, and pending feedback on every action.
