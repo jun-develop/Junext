@@ -32,8 +32,7 @@
     },
     "not_found": {
       "title": "Page not found",
-      "description": "The page does not exist, or you do not have access to it.",
-      "back": "Back to dashboard"
+      "description": "The page you are looking for does not exist or has been removed."
     },
     "search": "Search",
     "command_placeholder": "Type a command or search…",
@@ -67,26 +66,50 @@
     "save_changes": "Save changes",
     "show_password": "Show password",
     "hide_password": "Hide password",
-    "error": "Error"
+    "error": "Error",
+    "selected_count": "{count} selected",
+    "clear_filter": "Clear filter",
+    "reset_filters": "Reset",
+    "error_page": {
+      "title": "This page could not load",
+      "description": "The server may be busy or unreachable. Wait a moment and try again.",
+      "retry": "Try again",
+      "reference": "Reference: {digest}"
+    },
+    "forbidden": {
+      "title": "Access forbidden",
+      "description": "You do not have permission to view this page. Ask an administrator if you need access."
+    },
+    "status_page": {
+      "back": "Go back",
+      "home": "Back to dashboard"
+    }
   },
   "nav": {
     "dashboard": "Dashboard",
     "users": "Users",
+    "roles": "Roles",
+    "audit_logs": "Audit logs",
     "groups": {
       "general": "General"
-    },
-    "roles": "Roles"
+    }
   },
   "dashboard": {
     "title": "Dashboard",
     "greeting": "Welcome back, {name}",
-    "account": "Account",
-    "active": "Active",
-    "inactive": "Inactive",
-    "session_started": "Session started",
-    "session_ip": "From IP {ip}",
-    "permissions": "Permissions",
-    "permission_count": "{count, plural, =0 {No permissions} one {# permission} other {# permissions}}"
+    "users": "Users",
+    "view_users": "View all users",
+    "roles": "Roles",
+    "system_roles": "{count, plural, =0 {No system roles} one {# system role} other {# system roles}}",
+    "sessions": "Active sessions",
+    "manage_sessions": "Manage your devices",
+    "permissions": "Your permissions",
+    "permissions_hint": "Granted by your roles",
+    "recent_activity": "Recent activity",
+    "recent_activity_hint": "The latest changes to users and roles.",
+    "view_all": "View all",
+    "your_permissions": "What you can do",
+    "your_permissions_hint": "Every permission your roles grant you."
   },
   "api_errors": {
     "invalid_credentials": "Invalid email or password",
@@ -112,6 +135,13 @@
     "cannot_grant_unheld_permission": "You can only grant permissions you hold",
     "cannot_change_own_roles": "You cannot change your own roles",
     "invalid_role_code": "Use lowercase letters and underscores only",
+    "invalid_reset_token": "This reset link has expired or was already used",
+    "too_many_password_reset_requests": "Too many reset requests. Try again later",
+    "password_reset_unavailable": "Password reset is not available right now. Contact your administrator",
+    "invalid_current_password": "The current password is incorrect",
+    "new_password_same_as_current": "Choose a password different from the current one",
+    "password_too_long": "The password is too long",
+    "session_not_found": "That session has already ended",
     "unknown": "Something went wrong. Try again"
   },
   "validation": {
@@ -130,5 +160,26 @@
     "invalid_format_uuid": "Invalid identifier",
     "invalid_format_regex": "Invalid format",
     "invalid_format": "Invalid format"
+  },
+  "password": {
+    "rule": "At least 8 characters with upper and lower case letters, a number and a symbol",
+    "mismatch": "The passwords do not match",
+    "rules": {
+      "length": "At least 8 characters",
+      "lowercase": "A lowercase letter",
+      "uppercase": "An uppercase letter",
+      "number": "A number",
+      "symbol": "A symbol, such as ! or #"
+    }
+  },
+  "person": {
+    "phone_rule": "7 to 15 digits, optionally starting with +",
+    "avatar_too_large": "The image must be 5 MB or smaller",
+    "avatar_type": "Use a JPG, PNG or WebP image"
+  },
+  "avatar": {
+    "pick": "Upload image",
+    "remove": "Remove",
+    "hint": "JPG, PNG or WebP, up to 5 MB."
   }
 }

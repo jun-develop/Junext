@@ -29,7 +29,6 @@
     "system_hint": "Vai trò có sẵn. Không thể sửa hoặc xoá.",
     "permission_count": "{count, plural, =0 {Không có quyền} other {# quyền}}",
     "user_count": "{count, plural, =0 {Chưa có ai} other {# người dùng}}",
-    "no_permissions": "Vai trò này chưa có quyền nào.",
     "no_roles": "Chưa được gán vai trò nào.",
     "empty_title": "Chưa có vai trò",
     "empty_description": "Vai trò bạn thêm sẽ hiển thị ở đây.",
@@ -77,6 +76,14 @@
     },
     "back_to_list": "Quay lại danh sách",
     "back_to_role": "Quay lại vai trò",
-    "edit_description": "Quản lý tên và quyền của {name}."
+    "edit_description": "Quản lý tên và quyền của {name}.",
+    "granted": "Được cấp",
+    "not_granted": "Chưa cấp",
+    "granted_summary": "Được cấp {count} trên {total} quyền",
+    "assigned_count": "{count, plural, =0 {Chưa gán vai trò} other {Đã gán # vai trò}}",
+    "no_roles_hint": "Sửa người dùng để gán vai trò.",
+    "effective_permissions": "Quyền thực tế",
+    "effective_permissions_hint": "Những gì người dùng này làm được qua các vai trò: {count} trên {total} quyền.",
+    "activity": "Hoạt động"
   }
 }

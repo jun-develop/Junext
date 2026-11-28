@@ -10,6 +10,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty';
+import { TABLE_HEADER_ROW_CLASSES } from '@/components/table-styles';
 import {
   Table,
   TableBody,
@@ -21,7 +22,7 @@ import {
 import { deleteUser } from '@/features/users/actions';
 import type { UserPage } from '@/features/users/data';
 import type { UserListQuery } from '@/features/users/schemas';
-import { UserStatusBadge } from './user-identity';
+import { UserRoleBadges, UserStatusBadge } from './user-identity';
 
 type UsersTableProps = {
   users: UserPage['items'];
@@ -33,6 +34,8 @@ type UsersTableProps = {
 export function UsersTable({ users, query, canUpdate, canDelete }: UsersTableProps) {
   const t = useTranslations('users');
   const format = useFormatter();
+  const isFiltered =
+    query.search !== '' || query.status !== undefined || query.role_uuid.length > 0;
   const sortable = (label: string, field: UserListQuery['sort_by']) => (
     <SortableHeader label={label} field={field} searchParams={query} />
   );
@@ -41,14 +44,15 @@ export function UsersTable({ users, query, canUpdate, canDelete }: UsersTablePro
     <div className="overflow-hidden rounded-md border">
       <Table>
         <TableHeader>
-          <TableRow className="hover:bg-transparent">
+          <TableRow className={TABLE_HEADER_ROW_CLASSES}>
             <TableHead className="pl-4">{sortable(t('columns.name'), 'first_name')}</TableHead>
             <TableHead>{sortable(t('columns.email'), 'email')}</TableHead>
             <TableHead className="hidden md:table-cell">{t('columns.phone')}</TableHead>
             <TableHead className="hidden lg:table-cell">
               {sortable(t('columns.created_at'), 'created_at')}
             </TableHead>
-            <TableHead>{t('columns.status')}</TableHead>
+            <TableHead className="hidden xl:table-cell">{t('columns.roles')}</TableHead>
+            <TableHead>{sortable(t('columns.status'), 'status')}</TableHead>
             <TableHead className="w-12">
               <span className="sr-only">{t('columns.actions')}</span>
             </TableHead>
@@ -57,17 +61,17 @@ export function UsersTable({ users, query, canUpdate, canDelete }: UsersTablePro
         <TableBody>
           {users.length === 0 && (
             <TableRow className="hover:bg-transparent">
-              <TableCell colSpan={6}>
+              <TableCell colSpan={7}>
                 <Empty>
                   <EmptyHeader>
                     <EmptyMedia variant="icon">
                       <UsersIcon />
                     </EmptyMedia>
                     <EmptyTitle>
-                      {query.search ? t('empty_filtered_title') : t('empty_title')}
+                      {isFiltered ? t('empty_filtered_title') : t('empty_title')}
                     </EmptyTitle>
                     <EmptyDescription>
-                      {query.search ? t('empty_filtered_description') : t('empty_description')}
+                      {isFiltered ? t('empty_filtered_description') : t('empty_description')}
                     </EmptyDescription>
                   </EmptyHeader>
                 </Empty>
@@ -85,6 +89,9 @@ export function UsersTable({ users, query, canUpdate, canDelete }: UsersTablePro
               <TableCell className="hidden md:table-cell">{user.phone_number ?? '—'}</TableCell>
               <TableCell className="hidden lg:table-cell">
                 {format.dateTime(new Date(user.created_at), { dateStyle: 'medium' })}
+              </TableCell>
+              <TableCell className="hidden xl:table-cell">
+                <UserRoleBadges roles={user.roles} />
               </TableCell>
               <TableCell>
                 <UserStatusBadge status={user.status} />

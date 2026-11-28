@@ -12,12 +12,34 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List audit entries, newest first
+         * List audit entries
          * @description Requires permission: `audit_logs:read`.
+         *
+         *     Newest first unless sort_order=asc. Each entry carries its actor and a label of its entity, so a client needs no other read to show it.
          */
         get: operations["listAuditLogs"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/change-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Change your password
+         * @description Ends your other sessions and keeps this one. Wrong current passwords count as failed logins from your IP.
+         */
+        post: operations["changePassword"];
         delete?: never;
         options?: never;
         head?: never;
@@ -95,6 +117,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/logout-others": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * End every other session of this user
+         * @description Keeps the session of this request.
+         */
+        post: operations["logoutOthers"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/me": {
         parameters: {
             query?: never;
@@ -107,6 +149,34 @@ export interface paths {
         put?: never;
         post?: never;
         delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Update your profile
+         * @description Needs no permission. Email, status and roles cannot be changed here.
+         */
+        patch: operations["updateMe"];
+        trace?: never;
+    };
+    "/api/v1/auth/me/avatar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Upload your avatar
+         * @description Needs no permission. JPEG, PNG or WebP, up to 5 MB.
+         */
+        post: operations["uploadMyAvatar"];
+        /**
+         * Delete your avatar
+         * @description Needs no permission.
+         */
+        delete: operations["deleteMyAvatar"];
         options?: never;
         head?: never;
         patch?: never;
@@ -158,6 +228,26 @@ export interface paths {
         put?: never;
         post?: never;
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/sessions/{family_uuid}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * End one of your sessions
+         * @description Ending the session of this request logs it out. Another user's session, or one that has ended, is session_not_found.
+         */
+        delete: operations["revokeSession"];
         options?: never;
         head?: never;
         patch?: never;
@@ -380,7 +470,7 @@ export interface components {
             } | string;
             message: string;
             /** @enum {string} */
-            reason: "access_denied" | "api_not_found" | "cannot_change_own_roles" | "cannot_change_own_status" | "cannot_delete_self" | "cannot_grant_unheld_permission" | "cannot_manage_stronger_user" | "email_already_exists" | "entity_type_required" | "insufficient_permission" | "internal_server_error" | "invalid_avatar_file" | "invalid_credentials" | "invalid_credentials_warning" | "invalid_request" | "invalid_reset_token" | "invalid_role_code" | "invalid_role_name" | "invalid_token" | "invalid_token_type" | "ip_temporarily_blocked" | "password_reset_unavailable" | "password_too_long" | "recaptcha_verification_failed" | "request_body_too_large" | "role_already_exists" | "role_not_found" | "system_role_immutable" | "token_expired" | "token_reused" | "token_revoked" | "too_many_login_attempts" | "too_many_password_reset_requests" | "too_many_requests" | "unauthorized_token" | "unknown_permission" | "user_account_is_not_active" | "user_not_found" | "validation_error";
+            reason: "access_denied" | "api_not_found" | "cannot_change_own_roles" | "cannot_change_own_status" | "cannot_delete_self" | "cannot_grant_unheld_permission" | "cannot_manage_stronger_user" | "email_already_exists" | "entity_type_required" | "insufficient_permission" | "internal_server_error" | "invalid_avatar_file" | "invalid_credentials" | "invalid_credentials_warning" | "invalid_current_password" | "invalid_request" | "invalid_reset_token" | "invalid_role_code" | "invalid_role_name" | "invalid_token" | "invalid_token_type" | "ip_temporarily_blocked" | "new_password_same_as_current" | "password_reset_unavailable" | "password_too_long" | "recaptcha_verification_failed" | "request_body_too_large" | "role_already_exists" | "role_not_found" | "session_not_found" | "system_role_immutable" | "token_expired" | "token_reused" | "token_revoked" | "too_many_login_attempts" | "too_many_password_reset_requests" | "too_many_requests" | "unauthorized_token" | "unknown_permission" | "user_account_is_not_active" | "user_not_found" | "validation_error";
             /** @enum {string} */
             status: "error";
         };
@@ -413,6 +503,11 @@ export interface operations {
                 entity_type?: "users" | "roles";
                 entity_id?: string;
                 actor_uuid?: string;
+                action?: ("create" | "update" | "delete" | "set_roles" | "change_password")[];
+                from?: string;
+                to?: string;
+                search?: string;
+                sort_order?: "asc" | "desc";
             };
             header?: never;
             path?: never;
@@ -431,7 +526,14 @@ export interface operations {
                         data: {
                             items: {
                                 /** @enum {string} */
-                                action: "create" | "update" | "delete" | "set_roles";
+                                action: "create" | "update" | "delete" | "set_roles" | "change_password";
+                                actor: {
+                                    email: string;
+                                    first_name: string;
+                                    last_name: string;
+                                    /** Format: uuid */
+                                    uuid: string;
+                                } | null;
                                 /** Format: uuid */
                                 actor_uuid: string | null;
                                 changes: {
@@ -440,6 +542,7 @@ export interface operations {
                                 /** Format: date-time */
                                 created_at: string;
                                 entity_id: string;
+                                entity_label: string | null;
                                 /** @enum {string} */
                                 entity_type: "users" | "roles";
                                 /** Format: int64 */
@@ -533,6 +636,177 @@ export interface operations {
                         message: string;
                         /** @enum {string} */
                         reason: "too_many_requests";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "INTERNAL_SERVER_ERROR";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "internal_server_error";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+        };
+    };
+    changePassword: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    current_password: string;
+                    /** @description Validated by: password_strong */
+                    new_password: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        message: string;
+                        /** @enum {string} */
+                        status: "success";
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "BAD_REQUEST";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "invalid_request" | "invalid_current_password";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "UNAUTHORIZED";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "unauthorized_token" | "invalid_token" | "invalid_token_type" | "token_expired" | "token_revoked";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "FORBIDDEN";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "access_denied" | "user_account_is_not_active";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "PAYLOAD_TOO_LARGE";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "request_body_too_large";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "UNPROCESSABLE_ENTITY";
+                        error: {
+                            [key: string]: string;
+                        } | string;
+                        message: string;
+                        /** @enum {string} */
+                        reason: "validation_error";
+                        /** @enum {string} */
+                        status: "error";
+                    } | {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "UNPROCESSABLE_ENTITY";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "new_password_same_as_current" | "password_too_long";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "TOO_MANY_REQUESTS";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "too_many_requests" | "too_many_login_attempts" | "ip_temporarily_blocked";
                         /** @enum {string} */
                         status: "error";
                     };
@@ -1071,6 +1345,103 @@ export interface operations {
             };
         };
     };
+    logoutOthers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        message: string;
+                        /** @enum {string} */
+                        status: "success";
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "UNAUTHORIZED";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "unauthorized_token" | "invalid_token" | "invalid_token_type" | "token_expired" | "token_revoked";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "FORBIDDEN";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "access_denied" | "user_account_is_not_active";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "TOO_MANY_REQUESTS";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "too_many_requests";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "INTERNAL_SERVER_ERROR";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "internal_server_error";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+        };
+    };
     getMe: {
         parameters: {
             query?: never;
@@ -1125,6 +1496,7 @@ export interface operations {
                                 email: string;
                                 first_name: string;
                                 last_name: string;
+                                phone_number: string | null;
                                 /** Format: uuid */
                                 uuid: string;
                             };
@@ -1166,6 +1538,510 @@ export interface operations {
                         message: string;
                         /** @enum {string} */
                         reason: "access_denied" | "user_account_is_not_active";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "TOO_MANY_REQUESTS";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "too_many_requests";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "INTERNAL_SERVER_ERROR";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "internal_server_error";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+        };
+    };
+    updateMe: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    first_name?: string;
+                    last_name?: string;
+                    phone_number?: string | "";
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        data: {
+                            active: boolean;
+                            avatar_url: string | null;
+                            /** Format: date-time */
+                            created_at: string;
+                            email: string;
+                            first_name: string;
+                            last_name: string;
+                            phone_number: string | null;
+                            roles: {
+                                code: string;
+                                is_system: boolean;
+                                name: string;
+                                /** Format: uuid */
+                                uuid: string;
+                            }[];
+                            /** @enum {string} */
+                            status: "active" | "inactive";
+                            /** Format: date-time */
+                            updated_at: string | null;
+                            /** Format: uuid */
+                            uuid: string;
+                        };
+                        message: string;
+                        /** @enum {string} */
+                        status: "success";
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "BAD_REQUEST";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "invalid_request";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "UNAUTHORIZED";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "unauthorized_token" | "invalid_token" | "invalid_token_type" | "token_expired" | "token_revoked";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "FORBIDDEN";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "access_denied" | "user_account_is_not_active";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "NOT_FOUND";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "user_not_found";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Request Entity Too Large */
+            413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "PAYLOAD_TOO_LARGE";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "request_body_too_large";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "UNPROCESSABLE_ENTITY";
+                        error: {
+                            [key: string]: string;
+                        } | string;
+                        message: string;
+                        /** @enum {string} */
+                        reason: "validation_error";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "TOO_MANY_REQUESTS";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "too_many_requests";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "INTERNAL_SERVER_ERROR";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "internal_server_error";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+        };
+    };
+    uploadMyAvatar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    /** Format: binary */
+                    avatar: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        data: {
+                            active: boolean;
+                            avatar_url: string | null;
+                            /** Format: date-time */
+                            created_at: string;
+                            email: string;
+                            first_name: string;
+                            last_name: string;
+                            phone_number: string | null;
+                            roles: {
+                                code: string;
+                                is_system: boolean;
+                                name: string;
+                                /** Format: uuid */
+                                uuid: string;
+                            }[];
+                            /** @enum {string} */
+                            status: "active" | "inactive";
+                            /** Format: date-time */
+                            updated_at: string | null;
+                            /** Format: uuid */
+                            uuid: string;
+                        };
+                        message: string;
+                        /** @enum {string} */
+                        status: "success";
+                    };
+                };
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "BAD_REQUEST";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "invalid_avatar_file";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "UNAUTHORIZED";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "unauthorized_token" | "invalid_token" | "invalid_token_type" | "token_expired" | "token_revoked";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "FORBIDDEN";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "access_denied" | "user_account_is_not_active";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "NOT_FOUND";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "user_not_found";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "TOO_MANY_REQUESTS";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "too_many_requests";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "INTERNAL_SERVER_ERROR";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "internal_server_error";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+        };
+    };
+    deleteMyAvatar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        data: {
+                            active: boolean;
+                            avatar_url: string | null;
+                            /** Format: date-time */
+                            created_at: string;
+                            email: string;
+                            first_name: string;
+                            last_name: string;
+                            phone_number: string | null;
+                            roles: {
+                                code: string;
+                                is_system: boolean;
+                                name: string;
+                                /** Format: uuid */
+                                uuid: string;
+                            }[];
+                            /** @enum {string} */
+                            status: "active" | "inactive";
+                            /** Format: date-time */
+                            updated_at: string | null;
+                            /** Format: uuid */
+                            uuid: string;
+                        };
+                        message: string;
+                        /** @enum {string} */
+                        status: "success";
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "UNAUTHORIZED";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "unauthorized_token" | "invalid_token" | "invalid_token_type" | "token_expired" | "token_revoked";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "FORBIDDEN";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "access_denied" | "user_account_is_not_active";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "NOT_FOUND";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "user_not_found";
                         /** @enum {string} */
                         status: "error";
                     };
@@ -1644,6 +2520,123 @@ export interface operations {
             };
         };
     };
+    revokeSession: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                family_uuid: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        message: string;
+                        /** @enum {string} */
+                        status: "success";
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "UNAUTHORIZED";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "unauthorized_token" | "invalid_token" | "invalid_token_type" | "token_expired" | "token_revoked";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "FORBIDDEN";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "access_denied" | "user_account_is_not_active";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "NOT_FOUND";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "session_not_found";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "TOO_MANY_REQUESTS";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "too_many_requests";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "INTERNAL_SERVER_ERROR";
+                        message: string;
+                        /** @enum {string} */
+                        reason: "internal_server_error";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+        };
+    };
     listPermissions: {
         parameters: {
             query?: never;
@@ -1751,7 +2744,13 @@ export interface operations {
     };
     listRoles: {
         parameters: {
-            query?: never;
+            query?: {
+                page?: number;
+                page_size?: number;
+                search?: string;
+                sort_by?: "name" | "code" | "created_at" | "user_count";
+                sort_order?: "asc" | "desc";
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -1767,19 +2766,22 @@ export interface operations {
                     "application/json": {
                         api_info: components["schemas"]["APIInfo"];
                         data: {
-                            code: string;
-                            /** Format: date-time */
-                            created_at: string;
-                            is_system: boolean;
-                            name: string;
-                            permissions: components["schemas"]["PermissionCode"][];
-                            /** Format: date-time */
-                            updated_at: string | null;
-                            /** Format: int64 */
-                            user_count: number;
-                            /** Format: uuid */
-                            uuid: string;
-                        }[];
+                            items: {
+                                code: string;
+                                /** Format: date-time */
+                                created_at: string;
+                                is_system: boolean;
+                                name: string;
+                                permissions: components["schemas"]["PermissionCode"][];
+                                /** Format: date-time */
+                                updated_at: string | null;
+                                /** Format: int64 */
+                                user_count: number;
+                                /** Format: uuid */
+                                uuid: string;
+                            }[];
+                            pagination: components["schemas"]["Pagination"];
+                        };
                         message: string;
                         /** @enum {string} */
                         status: "success";
@@ -1817,6 +2819,27 @@ export interface operations {
                         message: string;
                         /** @enum {string} */
                         reason: "access_denied" | "user_account_is_not_active" | "insufficient_permission";
+                        /** @enum {string} */
+                        status: "error";
+                    };
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        api_info: components["schemas"]["APIInfo"];
+                        /** @enum {string} */
+                        code: "UNPROCESSABLE_ENTITY";
+                        error: {
+                            [key: string]: string;
+                        } | string;
+                        message: string;
+                        /** @enum {string} */
+                        reason: "validation_error";
                         /** @enum {string} */
                         status: "error";
                     };
@@ -2723,7 +3746,9 @@ export interface operations {
                 page?: number;
                 page_size?: number;
                 search?: string;
-                sort_by?: "created_at" | "email" | "first_name" | "last_name";
+                status?: "active" | "inactive";
+                role_uuid?: string[];
+                sort_by?: "created_at" | "email" | "first_name" | "last_name" | "status";
                 sort_order?: "asc" | "desc";
             };
             header?: never;
@@ -2750,6 +3775,13 @@ export interface operations {
                                 first_name: string;
                                 last_name: string;
                                 phone_number: string | null;
+                                roles: {
+                                    code: string;
+                                    is_system: boolean;
+                                    name: string;
+                                    /** Format: uuid */
+                                    uuid: string;
+                                }[];
                                 /** @enum {string} */
                                 status: "active" | "inactive";
                                 /** Format: date-time */
@@ -2902,6 +3934,13 @@ export interface operations {
                             first_name: string;
                             last_name: string;
                             phone_number: string | null;
+                            roles: {
+                                code: string;
+                                is_system: boolean;
+                                name: string;
+                                /** Format: uuid */
+                                uuid: string;
+                            }[];
                             /** @enum {string} */
                             status: "active" | "inactive";
                             /** Format: date-time */
@@ -3101,6 +4140,13 @@ export interface operations {
                             first_name: string;
                             last_name: string;
                             phone_number: string | null;
+                            roles: {
+                                code: string;
+                                is_system: boolean;
+                                name: string;
+                                /** Format: uuid */
+                                uuid: string;
+                            }[];
                             /** @enum {string} */
                             status: "active" | "inactive";
                             /** Format: date-time */
@@ -3361,6 +4407,13 @@ export interface operations {
                             first_name: string;
                             last_name: string;
                             phone_number: string | null;
+                            roles: {
+                                code: string;
+                                is_system: boolean;
+                                name: string;
+                                /** Format: uuid */
+                                uuid: string;
+                            }[];
                             /** @enum {string} */
                             status: "active" | "inactive";
                             /** Format: date-time */
@@ -3558,6 +4611,13 @@ export interface operations {
                             first_name: string;
                             last_name: string;
                             phone_number: string | null;
+                            roles: {
+                                code: string;
+                                is_system: boolean;
+                                name: string;
+                                /** Format: uuid */
+                                uuid: string;
+                            }[];
                             /** @enum {string} */
                             status: "active" | "inactive";
                             /** Format: date-time */
@@ -3709,6 +4769,13 @@ export interface operations {
                             first_name: string;
                             last_name: string;
                             phone_number: string | null;
+                            roles: {
+                                code: string;
+                                is_system: boolean;
+                                name: string;
+                                /** Format: uuid */
+                                uuid: string;
+                            }[];
                             /** @enum {string} */
                             status: "active" | "inactive";
                             /** Format: date-time */

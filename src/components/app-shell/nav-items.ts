@@ -1,4 +1,10 @@
-import { LayoutDashboardIcon, type LucideIcon, ShieldCheckIcon, UsersIcon } from 'lucide-react';
+import {
+  HistoryIcon,
+  LayoutDashboardIcon,
+  type LucideIcon,
+  ShieldCheckIcon,
+  UsersIcon,
+} from 'lucide-react';
 import type { Messages } from 'next-intl';
 import type { PermissionCode } from '@/lib/auth/session';
 
@@ -20,6 +26,12 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: '/dashboard', label: 'dashboard', icon: LayoutDashboardIcon },
       { href: '/users', label: 'users', icon: UsersIcon, permission: 'users:read' },
       { href: '/roles', label: 'roles', icon: ShieldCheckIcon, permission: 'roles:read' },
+      {
+        href: '/audit-logs',
+        label: 'audit_logs',
+        icon: HistoryIcon,
+        permission: 'audit_logs:read',
+      },
       /* junext:nav */
     ],
   },

@@ -29,7 +29,6 @@
     "system_hint": "Built-in role. It cannot be edited or deleted.",
     "permission_count": "{count, plural, =0 {No permissions} one {# permission} other {# permissions}}",
     "user_count": "{count, plural, =0 {No users} one {# user} other {# users}}",
-    "no_permissions": "This role has no permissions.",
     "no_roles": "No roles assigned.",
     "empty_title": "No roles yet",
     "empty_description": "Roles you add will appear here.",
@@ -77,6 +76,14 @@
     },
     "back_to_list": "Back to roles",
     "back_to_role": "Back to role",
-    "edit_description": "Manage the name and permissions of {name}."
+    "edit_description": "Manage the name and permissions of {name}.",
+    "granted": "Granted",
+    "not_granted": "Not granted",
+    "granted_summary": "{count} of {total} permissions granted",
+    "assigned_count": "{count, plural, =0 {No roles assigned} one {# role assigned} other {# roles assigned}}",
+    "no_roles_hint": "Edit the user to assign roles.",
+    "effective_permissions": "Effective permissions",
+    "effective_permissions_hint": "What this user can do through their roles: {count} of {total} permissions.",
+    "activity": "Activity"
   }
 }

@@ -1,6 +1,6 @@
 import 'server-only';
 import { cookies } from 'next/headers';
-import { notFound, redirect } from 'next/navigation';
+import { forbidden, redirect } from 'next/navigation';
 import { cache } from 'react';
 import { unwrap } from '@/core/api/client';
 import { ApiError } from '@/core/api/errors';
@@ -43,11 +43,11 @@ export async function requireSession(): Promise<Session> {
 }
 
 // requirePermission returns the session when the user holds the permission; otherwise the page
-// answers 404, so it does not reveal what exists. Jungo checks the permission again on every call.
+// answers 403 with the forbidden page. Jungo checks the permission again on every call.
 export async function requirePermission(permission: PermissionCode): Promise<Session> {
   const session = await requireSession();
   if (!session.permissions.includes(permission)) {
-    notFound();
+    forbidden();
   }
   return session;
 }

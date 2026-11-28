@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { hrefWithParams } from '@/core/url';
+import { hrefWithParams, searchParamsRecord } from '@/core/url';
 
 type PageSizeSelectProps = { value: number; options: readonly number[]; label: string };
 
@@ -18,7 +18,7 @@ export function PageSizeSelect({ value, options, label }: PageSizeSelectProps) {
   const searchParams = useSearchParams();
 
   function handleChange(next: string) {
-    const current = Object.fromEntries(searchParams.entries());
+    const current = searchParamsRecord(searchParams);
     router.push(`${pathname}${hrefWithParams(current, { page_size: next, page: undefined })}`);
   }
 

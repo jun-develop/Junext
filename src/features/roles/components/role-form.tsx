@@ -87,7 +87,7 @@ export function RoleForm({ action, isEdit, header, defaultValues = {}, grantable
       />
 
       <Card>
-        <CardContent className="space-y-8">
+        <CardContent className="gap-8">
           {formError && (
             <Alert variant="destructive">
               <AlertCircleIcon />

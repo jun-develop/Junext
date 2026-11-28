@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useRef } from 'react';
 import { Input } from '@/components/ui/input';
-import { hrefWithParams } from '@/core/url';
+import { hrefWithParams, searchParamsRecord } from '@/core/url';
 
 const DEBOUNCE_MS = 300;
 
@@ -18,7 +18,7 @@ export function TableSearch({ placeholder }: { placeholder: string }) {
   function handleChange(value: string) {
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
-      const current = Object.fromEntries(searchParams.entries());
+      const current = searchParamsRecord(searchParams);
       router.replace(
         `${pathname}${hrefWithParams(current, { search: value.trim(), page: undefined })}`,
       );

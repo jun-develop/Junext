@@ -41,3 +41,19 @@ jungo.use({
     return request;
   },
 });
+
+// avatarUpload is the request body for Jungo's avatar endpoints. openapi-fetch types the multipart
+// body as the file name; the serializer sends the real file under the "avatar" field.
+export function avatarUpload(avatar: File): {
+  body: { avatar: string };
+  bodySerializer: () => FormData;
+} {
+  return {
+    body: { avatar: avatar.name },
+    bodySerializer: () => {
+      const multipart = new FormData();
+      multipart.append('avatar', avatar);
+      return multipart;
+    },
+  };
+}

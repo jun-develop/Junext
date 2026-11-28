@@ -29,7 +29,7 @@ export function RequiredMark() {
 
 type SubmitButtonProps = {
   isPending: boolean;
-  icon: ReactNode;
+  icon?: ReactNode;
   label: string;
   pendingLabel: string;
 };

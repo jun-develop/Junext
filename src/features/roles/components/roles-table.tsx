@@ -2,6 +2,7 @@ import { ShieldIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { RowActions } from '@/components/row-actions';
+import { SortableHeader } from '@/components/sortable-header';
 import {
   Empty,
   EmptyDescription,
@@ -9,6 +10,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/components/ui/empty';
+import { TABLE_HEADER_ROW_CLASSES } from '@/components/table-styles';
 import {
   Table,
   TableBody,
@@ -19,27 +21,34 @@ import {
 } from '@/components/ui/table';
 import { deleteRole } from '@/features/roles/actions';
 import type { Role } from '@/features/roles/data';
+import type { RoleListQuery } from '@/features/roles/schemas';
 import { RoleTypeBadge } from './role-badges';
 
 type RolesTableProps = {
   roles: Role[];
-  isFiltered: boolean;
+  query: RoleListQuery;
   canUpdate: boolean;
   canDelete: boolean;
 };
 
-export function RolesTable({ roles, isFiltered, canUpdate, canDelete }: RolesTableProps) {
+export function RolesTable({ roles, query, canUpdate, canDelete }: RolesTableProps) {
   const t = useTranslations('roles');
+  const isFiltered = query.search !== '';
+  const sortable = (label: string, field: RoleListQuery['sort_by']) => (
+    <SortableHeader label={label} field={field} searchParams={query} />
+  );
 
   return (
     <div className="overflow-hidden rounded-md border">
       <Table>
         <TableHeader>
-          <TableRow className="hover:bg-transparent">
-            <TableHead className="pl-4">{t('columns.name')}</TableHead>
-            <TableHead>{t('columns.code')}</TableHead>
+          <TableRow className={TABLE_HEADER_ROW_CLASSES}>
+            <TableHead className="pl-4">{sortable(t('columns.name'), 'name')}</TableHead>
+            <TableHead>{sortable(t('columns.code'), 'code')}</TableHead>
             <TableHead className="hidden md:table-cell">{t('columns.permissions')}</TableHead>
-            <TableHead className="hidden md:table-cell">{t('columns.users')}</TableHead>
+            <TableHead className="hidden md:table-cell">
+              {sortable(t('columns.users'), 'user_count')}
+            </TableHead>
             <TableHead>{t('columns.type')}</TableHead>
             <TableHead className="w-12">
               <span className="sr-only">{t('columns.actions')}</span>

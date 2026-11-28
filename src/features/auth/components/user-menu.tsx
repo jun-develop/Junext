@@ -1,8 +1,10 @@
 'use client';
 
-import { ChevronsUpDownIcon, LogOutIcon } from 'lucide-react';
+import { ChevronsUpDownIcon, LogOutIcon, MonitorSmartphoneIcon, UserIcon } from 'lucide-react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { type ComponentProps, useTransition } from 'react';
+import { ROOMY_ITEM_CLASSES, ROOMY_MENU_CLASSES } from '@/components/menu-styles';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,6 +18,7 @@ import {
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { signOut } from '@/features/auth/actions';
 import type { Session } from '@/lib/auth/session';
+import { cn } from '@/lib/utils';
 
 type UserMenuProps = {
   user: Pick<Session['user'], 'first_name' | 'last_name' | 'email' | 'avatar_url'>;
@@ -39,7 +42,7 @@ export function UserMenu({ user }: UserMenuProps) {
           </DropdownMenuTrigger>
           <AccountMenuContent
             user={user}
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56"
+            className={cn('w-(--radix-dropdown-menu-trigger-width) min-w-56', ROOMY_MENU_CLASSES)}
             side="top"
             align="end"
           />
@@ -59,15 +62,23 @@ export function ProfileMenu({ user }: UserMenuProps) {
           <UserAvatar user={user} className="size-8 rounded-full" />
         </Button>
       </DropdownMenuTrigger>
-      <AccountMenuContent user={user} className="w-56" align="end" />
+      <AccountMenuContent
+        user={user}
+        className={cn('w-64', ROOMY_MENU_CLASSES)}
+        align="end"
+        sideOffset={8}
+        isCompact
+      />
     </DropdownMenu>
   );
 }
 
+// isCompact drops the avatar from the menu label: the header menu opens right under the avatar.
 function AccountMenuContent({
   user,
+  isCompact = false,
   ...props
-}: UserMenuProps & ComponentProps<typeof DropdownMenuContent>) {
+}: UserMenuProps & { isCompact?: boolean } & ComponentProps<typeof DropdownMenuContent>) {
   const t = useTranslations('auth');
   const [isPending, startTransition] = useTransition();
 
@@ -78,12 +89,29 @@ function AccountMenuContent({
 
   return (
     <DropdownMenuContent {...props}>
-      <DropdownMenuLabel className="flex items-center gap-2 font-normal">
-        <UserAvatar user={user} />
+      <DropdownMenuLabel className="flex items-center gap-2.5 px-2 py-2 font-normal">
+        {!isCompact && <UserAvatar user={user} />}
         <UserName user={user} />
       </DropdownMenuLabel>
       <DropdownMenuSeparator />
-      <DropdownMenuItem disabled={isPending} onSelect={handleSignOut}>
+      <DropdownMenuItem className={ROOMY_ITEM_CLASSES} asChild>
+        <Link href="/account">
+          <UserIcon />
+          {t('account')}
+        </Link>
+      </DropdownMenuItem>
+      <DropdownMenuItem className={ROOMY_ITEM_CLASSES} asChild>
+        <Link href="/account#sessions">
+          <MonitorSmartphoneIcon />
+          {t('sessions')}
+        </Link>
+      </DropdownMenuItem>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem
+        className={ROOMY_ITEM_CLASSES}
+        disabled={isPending}
+        onSelect={handleSignOut}
+      >
         <LogOutIcon />
         {isPending ? t('signing_out') : t('sign_out')}
       </DropdownMenuItem>
@@ -106,8 +134,10 @@ function UserAvatar({
 
 function UserName({ user }: UserMenuProps) {
   return (
-    <div className="grid flex-1 text-left text-sm leading-tight">
-      <span className="truncate font-medium">{`${user.first_name} ${user.last_name}`.trim()}</span>
+    <div className="grid flex-1 gap-0.5 text-left text-sm leading-tight">
+      <span className="text-foreground truncate font-medium">
+        {`${user.first_name} ${user.last_name}`.trim()}
+      </span>
       <span className="text-muted-foreground truncate text-xs">{user.email}</span>
     </div>
   );

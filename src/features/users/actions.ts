@@ -9,10 +9,11 @@ import {
   validationError,
 } from '@/core/api/action-error';
 import { unwrap } from '@/core/api/client';
+import { avatarSchema } from '@/core/person';
 import { z } from '@/core/validation';
 import { hasPermission } from '@/lib/auth/session';
-import { jungo } from '@/lib/jungo';
-import { avatarSchema, createUserSchema, updateUserSchema } from './schemas';
+import { avatarUpload, jungo } from '@/lib/jungo';
+import { createUserSchema, updateUserSchema } from './schemas';
 
 // A save can succeed while a follow-up (roles, status, avatar) fails: the user exists, so the form
 // moves on and shows the warning.
@@ -90,16 +91,7 @@ async function applyFollowUps(uuid: string, followUps: FollowUps): Promise<Actio
     if (followUps.avatar) {
       const avatar = followUps.avatar;
       await unwrap(
-        jungo.POST('/api/v1/users/{uuid}/avatar', {
-          params: { path },
-          // The serializer sends the real file; the typed body only names it.
-          body: { avatar: avatar.name },
-          bodySerializer: () => {
-            const multipart = new FormData();
-            multipart.append('avatar', avatar);
-            return multipart;
-          },
-        }),
+        jungo.POST('/api/v1/users/{uuid}/avatar', { params: { path }, ...avatarUpload(avatar) }),
       );
     } else if (followUps.removeAvatar) {
       await unwrap(jungo.DELETE('/api/v1/users/{uuid}/avatar', { params: { path } }));

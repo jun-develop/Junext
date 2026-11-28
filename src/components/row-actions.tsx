@@ -15,6 +15,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { ROOMY_ITEM_CLASSES, ROOMY_MENU_CLASSES } from '@/components/menu-styles';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -71,9 +72,9 @@ export function RowActions({ viewHref, editHref, onDelete }: RowActionsProps) {
             <MoreHorizontalIcon />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-40">
+        <DropdownMenuContent align="end" className={`w-44 ${ROOMY_MENU_CLASSES}`}>
           {viewHref && (
-            <DropdownMenuItem asChild>
+            <DropdownMenuItem className={ROOMY_ITEM_CLASSES} asChild>
               <Link href={viewHref}>
                 <EyeIcon />
                 {t('common.view')}
@@ -81,7 +82,7 @@ export function RowActions({ viewHref, editHref, onDelete }: RowActionsProps) {
             </DropdownMenuItem>
           )}
           {editHref && (
-            <DropdownMenuItem asChild>
+            <DropdownMenuItem className={ROOMY_ITEM_CLASSES} asChild>
               <Link href={editHref}>
                 <PencilIcon />
                 {t('common.edit')}
@@ -91,7 +92,11 @@ export function RowActions({ viewHref, editHref, onDelete }: RowActionsProps) {
           {onDelete && (
             <>
               {(viewHref || editHref) && <DropdownMenuSeparator />}
-              <DropdownMenuItem variant="destructive" onSelect={() => setIsConfirmOpen(true)}>
+              <DropdownMenuItem
+                className={ROOMY_ITEM_CLASSES}
+                variant="destructive"
+                onSelect={() => setIsConfirmOpen(true)}
+              >
                 <Trash2Icon />
                 {t('common.delete')}
               </DropdownMenuItem>

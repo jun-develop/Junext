@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { listRoles, listUserRoles } from '@/features/roles/data';
+import { listAllRoles } from '@/features/roles/data';
 import { updateUser } from '@/features/users/actions';
 import { UserForm } from '@/features/users/components/user-form';
 import { getUser } from '@/features/users/data';
@@ -10,11 +10,10 @@ export default async function EditUserPage({ params }: PageProps<'/users/[uuid]/
   const session = await requirePermission('users:update');
   const canAssign =
     session.permissions.includes('roles:assign') && session.permissions.includes('roles:read');
-  const [user, t, roles, assigned] = await Promise.all([
+  const [user, t, roles] = await Promise.all([
     getUser(uuid),
     getTranslations('users'),
-    canAssign ? listRoles() : null,
-    canAssign ? listUserRoles(uuid) : [],
+    canAssign ? listAllRoles() : null,
   ]);
 
   return (
@@ -33,7 +32,7 @@ export default async function EditUserPage({ params }: PageProps<'/users/[uuid]/
         phone_number: user.phone_number ?? '',
         status: user.status,
         avatar_url: user.avatar_url,
-        role_uuids: assigned.map((role) => role.uuid),
+        role_uuids: user.roles.map((role) => role.uuid),
       }}
       roleOptions={roles}
       isSelf={session.user.uuid === user.uuid}

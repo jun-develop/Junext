@@ -1,6 +1,6 @@
 {
   "users": {
-    "title": "User List",
+    "title": "Users",
     "description": "Manage your users and their access here.",
     "create": "Add user",
     "edit": "Edit",
@@ -16,7 +16,8 @@
       "phone": "Phone number",
       "status": "Status",
       "created_at": "Registered",
-      "actions": "Actions"
+      "actions": "Actions",
+      "roles": "Roles"
     },
     "fields": {
       "first_name": "First name",
@@ -33,8 +34,6 @@
       "active": "Active",
       "inactive": "Inactive"
     },
-    "password_rule": "At least 8 characters with upper and lower case letters, a number and a symbol",
-    "phone_rule": "7 to 15 digits, optionally starting with +",
     "empty_title": "No users yet",
     "empty_description": "Users you add will appear here.",
     "empty_filtered_title": "No matching users",
@@ -53,30 +52,18 @@
       "access_hint": "What this user can do and whether they can sign in."
     },
     "email_locked": "The sign-in email cannot be changed.",
-    "password_rules": {
-      "length": "At least 8 characters",
-      "lowercase": "A lowercase letter",
-      "uppercase": "An uppercase letter",
-      "number": "A number",
-      "symbol": "A symbol, such as ! or #"
-    },
     "back_to_list": "Back to users",
     "back_to_user": "Back to user",
     "password_placeholder": "Create a password",
     "confirm_password_placeholder": "Repeat the password",
     "first_name_placeholder": "Jane",
     "last_name_placeholder": "Doe",
-    "avatar_pick": "Upload image",
-    "avatar_remove": "Remove",
-    "avatar_hint": "JPG, PNG or WebP, up to 5 MB.",
-    "avatar_too_large": "The image must be 5 MB or smaller",
-    "avatar_type": "Use a JPG, PNG or WebP image",
-    "password_mismatch": "The passwords do not match",
     "saved_with_warning": "Saved, but part of the change failed: {detail}",
     "roles_no_permission": "You do not have permission to assign roles.",
     "roles_hint": "The user gets every permission of the roles you tick.",
     "self_roles_locked": "You cannot change your own roles.",
     "self_status_locked": "You cannot change your own status.",
-    "role_permission_count": "{count, plural, =0 {No permissions} one {# permission} other {# permissions}}"
+    "role_permission_count": "{count, plural, =0 {No permissions} one {# permission} other {# permissions}}",
+    "activity": "Activity"
   }
 }

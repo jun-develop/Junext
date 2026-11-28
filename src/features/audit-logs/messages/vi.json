@@ -1,0 +1,35 @@
+{
+  "audit_logs": {
+    "title": "Nhật ký hoạt động",
+    "description": "Ai đã thay đổi gì, mới nhất trước.",
+    "entity_filter": "Bản ghi",
+    "entities": {
+      "users": "Người dùng",
+      "roles": "Vai trò"
+    },
+    "actions": {
+      "create": "Tạo mới",
+      "update": "Cập nhật",
+      "delete": "Xoá",
+      "set_roles": "Đổi vai trò",
+      "change_password": "Đổi mật khẩu"
+    },
+    "columns": {
+      "time": "Thời gian",
+      "actor": "Người thực hiện",
+      "action": "Hành động",
+      "entity": "Bản ghi",
+      "changes": "Thay đổi"
+    },
+    "change": "{before} → {after}",
+    "system_actor": "Hệ thống",
+    "empty_title": "Chưa có hoạt động",
+    "empty_description": "Các thay đổi về người dùng và vai trò sẽ hiển thị ở đây.",
+    "search_placeholder": "Tìm theo tên hoặc email...",
+    "action_filter": "Hành động",
+    "from": "Từ ngày",
+    "to": "Đến ngày",
+    "empty_filtered_title": "Không có hoạt động phù hợp",
+    "empty_filtered_description": "Thử bộ lọc khác hoặc khoảng ngày rộng hơn."
+  }
+}

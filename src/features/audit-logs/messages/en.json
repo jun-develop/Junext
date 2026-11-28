@@ -1,0 +1,35 @@
+{
+  "audit_logs": {
+    "title": "Audit logs",
+    "description": "Who changed what, newest first.",
+    "entity_filter": "Record",
+    "entities": {
+      "users": "User",
+      "roles": "Role"
+    },
+    "actions": {
+      "create": "Created",
+      "update": "Updated",
+      "delete": "Deleted",
+      "set_roles": "Roles changed",
+      "change_password": "Password changed"
+    },
+    "columns": {
+      "time": "Time",
+      "actor": "By",
+      "action": "Action",
+      "entity": "Record",
+      "changes": "Changes"
+    },
+    "change": "{before} → {after}",
+    "system_actor": "System",
+    "empty_title": "No activity yet",
+    "empty_description": "Changes to users and roles will appear here.",
+    "search_placeholder": "Search by name or email...",
+    "action_filter": "Action",
+    "from": "From date",
+    "to": "To date",
+    "empty_filtered_title": "No matching activity",
+    "empty_filtered_description": "Try different filters or a wider date range."
+  }
+}

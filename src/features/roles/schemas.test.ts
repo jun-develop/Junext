@@ -21,11 +21,22 @@ describe('createRoleSchema', () => {
 });
 
 describe('roleListQuerySchema', () => {
+  const defaults = {
+    page: 1,
+    page_size: 10,
+    search: '',
+    sort_by: 'created_at',
+    sort_order: 'desc',
+  };
+
   it.each([
-    [{}, ''],
-    [{ search: '  edit ' }, 'edit'],
-    [{ search: ['a', 'b'] }, ''],
+    [{}, defaults],
+    [
+      { page: '2', page_size: '20', search: '  edit ', sort_by: 'user_count', sort_order: 'desc' },
+      { page: 2, page_size: 20, search: 'edit', sort_by: 'user_count', sort_order: 'desc' },
+    ],
+    [{ page: '-1', page_size: '7', search: ['a', 'b'], sort_by: 'permissions' }, defaults],
   ])('parses %j', (input, expected) => {
-    expect(roleListQuerySchema.parse(input).search).toBe(expected);
+    expect(roleListQuerySchema.parse(input)).toEqual(expected);
   });
 });

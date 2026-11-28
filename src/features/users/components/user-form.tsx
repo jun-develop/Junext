@@ -1,14 +1,16 @@
 'use client';
 
-import { AlertCircleIcon, CheckIcon, CircleIcon, SaveIcon, UserPlusIcon } from 'lucide-react';
+import { AlertCircleIcon, SaveIcon, UserPlusIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { type FormEvent, startTransition, useActionState, useState } from 'react';
 import { toast } from 'sonner';
+import { AvatarField } from '@/components/avatar-field';
 import { FormSection, RequiredMark, SubmitButton } from '@/components/form-section';
 import { PageHeader } from '@/components/page-header';
 import { PasswordInput } from '@/components/password-input';
+import { PasswordRules } from '@/components/password-rules';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -26,9 +28,7 @@ import { Separator } from '@/components/ui/separator';
 import { translateKey } from '@/core/i18n';
 import { translateIssue } from '@/core/validation';
 import type { UserFormState } from '@/features/users/actions';
-import { PASSWORD_RULES } from '@/features/users/schemas';
 import { cn } from '@/lib/utils';
-import { AvatarField } from './avatar-field';
 
 type RoleOption = { uuid: string; name: string; permissions: readonly string[] };
 
@@ -147,7 +147,7 @@ export function UserForm({
       />
 
       <Card>
-        <CardContent className="space-y-8">
+        <CardContent className="gap-8">
           {formError && (
             <Alert variant="destructive">
               <AlertCircleIcon />
@@ -233,6 +233,7 @@ export function UserForm({
               type: 'tel',
               autoComplete: 'tel',
               placeholder: '+84901234567',
+              isWide: true,
             })}
             <Field data-invalid={!!fieldError('avatar')} className="sm:col-span-2">
               <FieldLabel htmlFor="avatar">{t('users.fields.avatar')}</FieldLabel>
@@ -257,7 +258,11 @@ export function UserForm({
               isSelf={isSelf}
               error={fieldError('role_uuids')}
             />
-            <Field data-invalid={!!fieldError('status')} data-disabled={isSelf}>
+            <Field
+              data-invalid={!!fieldError('status')}
+              data-disabled={isSelf}
+              className="sm:col-span-2"
+            >
               <FieldLabel htmlFor="status">{t('users.fields.status')}</FieldLabel>
               <Select
                 name="status"
@@ -333,36 +338,5 @@ function RolePicker({ options, selected, isSelf, error }: RolePickerProps) {
       <FieldDescription>{isSelf ? t('self_roles_locked') : t('roles_hint')}</FieldDescription>
       <FieldError>{error}</FieldError>
     </Field>
-  );
-}
-
-// PasswordRules ticks off each password requirement as the user types.
-function PasswordRules({
-  id,
-  password,
-  isInvalid,
-}: {
-  id: string;
-  password: string;
-  isInvalid: boolean;
-}) {
-  const t = useTranslations('users.password_rules');
-  return (
-    <ul id={id} className="grid gap-1.5 text-sm sm:col-span-2 sm:grid-cols-2">
-      {PASSWORD_RULES.map((rule) => {
-        const isMet = rule.pattern.test(password);
-        const Icon = isMet ? CheckIcon : CircleIcon;
-        const tone = isInvalid ? 'text-destructive' : 'text-muted-foreground';
-        return (
-          <li
-            key={rule.key}
-            className={cn('flex items-center gap-2', isMet ? 'text-success' : tone)}
-          >
-            <Icon className="size-4" aria-hidden />
-            {t(rule.key)}
-          </li>
-        );
-      })}
-    </ul>
   );
 }

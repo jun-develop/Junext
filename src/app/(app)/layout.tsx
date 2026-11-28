@@ -37,9 +37,9 @@ export default async function AppLayout({ children }: LayoutProps<'/'>) {
           settings={<ThemeSettings variant={variant} collapsible={collapsible} />}
           profile={<ProfileMenu user={session.user} />}
         />
-        <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-4 px-4 py-6 sm:gap-6">
+        <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-4 px-4 py-6 sm:gap-6">
           {children}
-        </main>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

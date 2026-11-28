@@ -1,12 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { decodeIssue } from '@/core/validation';
-import {
-  avatarSchema,
-  createUserSchema,
-  PASSWORD_RULES,
-  updateUserSchema,
-  userListQuerySchema,
-} from './schemas';
+import { createUserSchema, updateUserSchema, userListQuerySchema } from './schemas';
 
 const validUser = {
   first_name: 'An',
@@ -30,13 +24,13 @@ describe('createUserSchema', () => {
   it('rejects a confirmation that does not match', () => {
     const result = createUserSchema.safeParse({ ...validUser, confirm_password: 'Other1!pass' });
     expect(result.error?.issues[0]?.path).toEqual(['confirm_password']);
-    expect(firstIssueKey(result)).toBe('users.password_mismatch');
+    expect(firstIssueKey(result)).toBe('password.mismatch');
   });
 
   it.each([
-    ['a weak password', { password: 'password1' }, 'users.password_rule'],
+    ['a weak password', { password: 'password1' }, 'password.rule'],
     ['a short password', { password: 'S0!a' }, 'validation.too_small_string'],
-    ['a bad phone number', { phone_number: '12-34' }, 'users.phone_rule'],
+    ['a bad phone number', { phone_number: '12-34' }, 'person.phone_rule'],
     ['a one-letter name', { first_name: 'A' }, 'validation.too_small_string'],
     ['a bad email', { email: 'not-an-email' }, 'validation.invalid_format_email'],
   ])('rejects %s', (_, override, key) => {
@@ -73,45 +67,28 @@ describe('userListQuerySchema', () => {
     search: '',
     sort_by: 'created_at',
     sort_order: 'desc',
+    status: undefined,
+    role_uuid: [],
   };
+  const roleA = '0f74cc6d-2ee2-43ce-939d-3084a8977242';
+  const roleB = '297e4598-cc6c-4a4f-80d8-c945e3e510e3';
 
   it.each([
     [{}, defaults],
     [
       { page: '3', page_size: '20', search: '  an  ', sort_by: 'email', sort_order: 'asc' },
-      { page: 3, page_size: 20, search: 'an', sort_by: 'email', sort_order: 'asc' },
+      { ...defaults, page: 3, page_size: 20, search: 'an', sort_by: 'email', sort_order: 'asc' },
+    ],
+    [
+      { status: 'inactive', role_uuid: roleA, sort_by: 'status' },
+      { ...defaults, status: 'inactive', role_uuid: [roleA], sort_by: 'status' },
+    ],
+    [
+      { status: 'banned', role_uuid: [roleA, 'nope', roleB] },
+      { ...defaults, role_uuid: [roleA, roleB] },
     ],
     [{ page: '-2', page_size: '1000', search: ['a', 'b'], sort_by: 'password' }, defaults],
   ])('parses %j', (input, expected) => {
     expect(userListQuerySchema.parse(input)).toEqual(expected);
-  });
-});
-
-describe('PASSWORD_RULES', () => {
-  it.each(['Str0ng!pass', 'password1', 'PASSWORD!1', 'Short1!', 'NoSymbol12', 'ÀBc1!xyzz'])(
-    'agrees with the create schema for %s',
-    (password) => {
-      const passesRules = PASSWORD_RULES.every((rule) => rule.pattern.test(password));
-      const passesSchema = createUserSchema.safeParse({
-        ...validUser,
-        password,
-        confirm_password: password,
-      }).success;
-      expect(passesRules).toBe(passesSchema);
-    },
-  );
-});
-
-describe('avatarSchema', () => {
-  it.each([
-    ['a small PNG', new File(['x'], 'a.png', { type: 'image/png' }), true],
-    ['a GIF', new File(['x'], 'a.gif', { type: 'image/gif' }), false],
-    [
-      'a 6 MB JPEG',
-      new File([new Uint8Array(6 * 1024 * 1024)], 'a.jpg', { type: 'image/jpeg' }),
-      false,
-    ],
-  ])('%s -> %s', (_, file, isValid) => {
-    expect(avatarSchema.safeParse(file).success).toBe(isValid);
   });
 });

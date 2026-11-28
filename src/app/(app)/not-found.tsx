@@ -1,5 +1,7 @@
-import { NotFoundState } from '@/components/not-found-state';
+import { useTranslations } from 'next-intl';
+import { StatusPage } from '@/components/status-page';
 
 export default function AppNotFound() {
-  return <NotFoundState />;
+  const t = useTranslations('common.not_found');
+  return <StatusPage code={404} title={t('title')} description={t('description')} />;
 }

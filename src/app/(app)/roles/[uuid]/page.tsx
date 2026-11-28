@@ -1,13 +1,14 @@
-import { PencilIcon } from 'lucide-react';
+import { HistoryIcon, PencilIcon } from 'lucide-react';
 import Link from 'next/link';
 import { getFormatter, getTranslations } from 'next-intl/server';
 import { PageHeader } from '@/components/page-header';
 import { RowActions } from '@/components/row-actions';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { deleteRole } from '@/features/roles/actions';
 import { PermissionList, RoleTypeBadge } from '@/features/roles/components/role-badges';
 import { getRole } from '@/features/roles/data';
+import { ALL_PERMISSIONS } from '@/features/roles/permissions';
 import { requirePermission } from '@/lib/auth/session';
 
 export default async function RolePage({ params }: PageProps<'/roles/[uuid]'>) {
@@ -25,6 +26,10 @@ export default async function RolePage({ params }: PageProps<'/roles/[uuid]'>) {
     { label: t('columns.type'), value: <RoleTypeBadge isSystem={role.is_system} /> },
     { label: t('columns.users'), value: t('user_count', { count: role.user_count }) },
     {
+      label: t('fields.permissions'),
+      value: `${role.permissions.length}/${ALL_PERMISSIONS.length}`,
+    },
+    {
       label: t('created_at'),
       value: format.dateTime(new Date(role.created_at), {
         dateStyle: 'medium',
@@ -41,6 +46,14 @@ export default async function RolePage({ params }: PageProps<'/roles/[uuid]'>) {
         description={role.is_system ? t('system_hint') : undefined}
         actions={
           <>
+            {session.permissions.includes('audit_logs:read') && (
+              <Button variant="outline" asChild>
+                <Link href={`/audit-logs?entity_type=roles&entity_id=${role.uuid}`}>
+                  <HistoryIcon />
+                  {t('activity')}
+                </Link>
+              </Button>
+            )}
             {canUpdate && (
               <Button variant="outline" asChild>
                 <Link href={`/roles/${role.uuid}/edit`}>
@@ -63,7 +76,7 @@ export default async function RolePage({ params }: PageProps<'/roles/[uuid]'>) {
           </>
         }
       />
-      <div className="grid max-w-5xl items-start gap-4 lg:grid-cols-2">
+      <div className="grid items-start gap-4 lg:grid-cols-3">
         <Card>
           <CardHeader>
             <CardTitle>{t('details')}</CardTitle>
@@ -71,17 +84,23 @@ export default async function RolePage({ params }: PageProps<'/roles/[uuid]'>) {
           <CardContent>
             <dl className="divide-y">
               {details.map((detail) => (
-                <div key={detail.label} className="grid gap-1 py-3 sm:grid-cols-3">
+                <div key={detail.label} className="flex items-center justify-between gap-4 py-3">
                   <dt className="text-muted-foreground text-sm">{detail.label}</dt>
-                  <dd className="text-sm sm:col-span-2">{detail.value}</dd>
+                  <dd className="text-right text-sm">{detail.value}</dd>
                 </div>
               ))}
             </dl>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle>{t('fields.permissions')}</CardTitle>
+            <CardDescription>
+              {t('granted_summary', {
+                count: role.permissions.length,
+                total: ALL_PERMISSIONS.length,
+              })}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <PermissionList permissions={role.permissions} />

@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { listRoles } from '@/features/roles/data';
+import { listAllRoles } from '@/features/roles/data';
 import { createUser } from '@/features/users/actions';
 import { UserForm } from '@/features/users/components/user-form';
 import { requirePermission } from '@/lib/auth/session';
@@ -21,7 +21,7 @@ export default async function CreateUserPage() {
         description: t('create_description'),
         back: { href: '/users', label: t('back_to_list') },
       }}
-      roleOptions={canAssign ? await listRoles() : null}
+      roleOptions={canAssign ? await listAllRoles() : null}
       isSelf={false}
     />
   );

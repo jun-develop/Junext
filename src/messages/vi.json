@@ -32,8 +32,7 @@
     },
     "not_found": {
       "title": "Không tìm thấy trang",
-      "description": "Trang không tồn tại hoặc bạn không có quyền truy cập.",
-      "back": "Về trang tổng quan"
+      "description": "Trang bạn tìm không tồn tại hoặc đã bị xoá."
     },
     "search": "Tìm kiếm",
     "command_placeholder": "Nhập lệnh hoặc tìm kiếm…",
@@ -67,26 +66,50 @@
     "save_changes": "Lưu thay đổi",
     "show_password": "Hiện mật khẩu",
     "hide_password": "Ẩn mật khẩu",
-    "error": "Lỗi"
+    "error": "Lỗi",
+    "selected_count": "Đã chọn {count}",
+    "clear_filter": "Bỏ lọc",
+    "reset_filters": "Đặt lại",
+    "error_page": {
+      "title": "Không tải được trang này",
+      "description": "Máy chủ có thể đang bận hoặc không kết nối được. Đợi một chút rồi thử lại.",
+      "retry": "Thử lại",
+      "reference": "Mã tham chiếu: {digest}"
+    },
+    "forbidden": {
+      "title": "Không có quyền truy cập",
+      "description": "Bạn không có quyền xem trang này. Hãy liên hệ quản trị viên nếu cần quyền truy cập."
+    },
+    "status_page": {
+      "back": "Quay lại",
+      "home": "Về trang tổng quan"
+    }
   },
   "nav": {
     "dashboard": "Tổng quan",
     "users": "Người dùng",
+    "roles": "Vai trò",
+    "audit_logs": "Nhật ký hoạt động",
     "groups": {
       "general": "Chung"
-    },
-    "roles": "Vai trò"
+    }
   },
   "dashboard": {
     "title": "Tổng quan",
     "greeting": "Chào mừng trở lại, {name}",
-    "account": "Tài khoản",
-    "active": "Đang hoạt động",
-    "inactive": "Không hoạt động",
-    "session_started": "Phiên bắt đầu lúc",
-    "session_ip": "Từ IP {ip}",
-    "permissions": "Quyền",
-    "permission_count": "{count, plural, =0 {Không có quyền} other {# quyền}}"
+    "users": "Người dùng",
+    "view_users": "Xem tất cả người dùng",
+    "roles": "Vai trò",
+    "system_roles": "{count, plural, =0 {Không có vai trò hệ thống} other {# vai trò hệ thống}}",
+    "sessions": "Phiên đăng nhập",
+    "manage_sessions": "Quản lý thiết bị của bạn",
+    "permissions": "Quyền của bạn",
+    "permissions_hint": "Được cấp qua các vai trò",
+    "recent_activity": "Hoạt động gần đây",
+    "recent_activity_hint": "Các thay đổi mới nhất về người dùng và vai trò.",
+    "view_all": "Xem tất cả",
+    "your_permissions": "Bạn được làm gì",
+    "your_permissions_hint": "Mọi quyền mà các vai trò cấp cho bạn."
   },
   "api_errors": {
     "invalid_credentials": "Email hoặc mật khẩu không đúng",
@@ -112,6 +135,13 @@
     "cannot_grant_unheld_permission": "Bạn chỉ cấp được những quyền mà bạn đang có",
     "cannot_change_own_roles": "Bạn không thể đổi vai trò của chính mình",
     "invalid_role_code": "Chỉ dùng chữ thường và dấu gạch dưới",
+    "invalid_reset_token": "Đường dẫn đặt lại đã hết hạn hoặc đã được dùng",
+    "too_many_password_reset_requests": "Bạn đã yêu cầu quá nhiều lần. Hãy thử lại sau",
+    "password_reset_unavailable": "Hiện chưa thể đặt lại mật khẩu. Hãy liên hệ quản trị viên",
+    "invalid_current_password": "Mật khẩu hiện tại không đúng",
+    "new_password_same_as_current": "Hãy chọn mật khẩu khác mật khẩu hiện tại",
+    "password_too_long": "Mật khẩu quá dài",
+    "session_not_found": "Phiên đó đã kết thúc",
     "unknown": "Đã có lỗi xảy ra. Hãy thử lại"
   },
   "validation": {
@@ -130,5 +160,26 @@
     "invalid_format_uuid": "Mã định danh không hợp lệ",
     "invalid_format_regex": "Sai định dạng",
     "invalid_format": "Sai định dạng"
+  },
+  "password": {
+    "rule": "Ít nhất 8 ký tự, gồm chữ hoa, chữ thường, chữ số và ký tự đặc biệt",
+    "mismatch": "Mật khẩu nhập lại không khớp",
+    "rules": {
+      "length": "Ít nhất 8 ký tự",
+      "lowercase": "Một chữ thường",
+      "uppercase": "Một chữ hoa",
+      "number": "Một chữ số",
+      "symbol": "Một ký tự đặc biệt, ví dụ ! hoặc #"
+    }
+  },
+  "person": {
+    "phone_rule": "Từ 7 đến 15 chữ số, có thể bắt đầu bằng +",
+    "avatar_too_large": "Ảnh phải nhỏ hơn hoặc bằng 5 MB",
+    "avatar_type": "Hãy dùng ảnh JPG, PNG hoặc WebP"
+  },
+  "avatar": {
+    "pick": "Tải ảnh lên",
+    "remove": "Xoá",
+    "hint": "JPG, PNG hoặc WebP, tối đa 5 MB."
   }
 }

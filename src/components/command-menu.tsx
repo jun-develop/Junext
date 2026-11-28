@@ -34,7 +34,9 @@ export function CommandMenu({ permissions }: { permissions: PermissionCode[] }) 
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey)) {
+      // Chrome autofill fires keydown without a key, so compare instead of calling key methods.
+      const isK = event.key === 'k' || event.key === 'K';
+      if (isK && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         setIsOpen((open) => !open);
       }

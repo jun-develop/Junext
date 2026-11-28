@@ -9,6 +9,7 @@ const catalogues = {
       import('@/features/auth/messages/en.json'),
       import('@/features/users/messages/en.json'),
       import('@/features/roles/messages/en.json'),
+      import('@/features/audit-logs/messages/en.json'),
     ]),
   vi: () =>
     Promise.all([
@@ -16,6 +17,7 @@ const catalogues = {
       import('@/features/auth/messages/vi.json'),
       import('@/features/users/messages/vi.json'),
       import('@/features/roles/messages/vi.json'),
+      import('@/features/audit-logs/messages/vi.json'),
     ]),
 } satisfies Record<Locale, () => Promise<{ default: object }[]>>;
 

@@ -1,7 +1,10 @@
 'use client';
 
+import { CircleCheckIcon } from 'lucide-react';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { useActionState } from 'react';
+import { PasswordInput } from '@/components/password-input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
@@ -10,9 +13,9 @@ import { translateKey } from '@/core/i18n';
 import { translateIssue } from '@/core/validation';
 import { signIn } from '@/features/auth/actions';
 
-type LoginFormProps = { next: string | null };
+type LoginFormProps = { next: string | null; isPasswordReset: boolean };
 
-export function LoginForm({ next }: LoginFormProps) {
+export function LoginForm({ next, isPasswordReset }: LoginFormProps) {
   const t = useTranslations();
   const [state, formAction, isPending] = useActionState(signIn, null);
   const fieldErrors = state?.error.fieldErrors ?? {};
@@ -34,6 +37,12 @@ export function LoginForm({ next }: LoginFormProps) {
       <form action={formAction} noValidate>
         {next && <input type="hidden" name="next" value={next} />}
         <FieldGroup>
+          {isPasswordReset && !state && (
+            <Alert>
+              <CircleCheckIcon />
+              <AlertDescription>{t('auth.password_reset_done')}</AlertDescription>
+            </Alert>
+          )}
           {formError && (
             <Alert variant="destructive">
               <AlertDescription>{formError}</AlertDescription>
@@ -53,11 +62,18 @@ export function LoginForm({ next }: LoginFormProps) {
             <FieldError>{fieldError('email')}</FieldError>
           </Field>
           <Field data-invalid={!!fieldError('password')}>
-            <FieldLabel htmlFor="password">{t('auth.password')}</FieldLabel>
-            <Input
+            <div className="flex items-center justify-between">
+              <FieldLabel htmlFor="password">{t('auth.password')}</FieldLabel>
+              <Link
+                href="/forgot-password"
+                className="text-muted-foreground hover:text-foreground text-sm underline-offset-4 hover:underline"
+              >
+                {t('auth.forgot_password_link')}
+              </Link>
+            </div>
+            <PasswordInput
               id="password"
               name="password"
-              type="password"
               autoComplete="current-password"
               aria-invalid={!!fieldError('password')}
               required

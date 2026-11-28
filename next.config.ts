@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   cacheComponents: false,
   experimental: {
+    // forbidden() answers 403 when a signed-in user lacks a page's permission.
+    authInterrupts: true,
     // Avatars go through a server action; Jungo accepts up to 5 MB, plus room for multipart overhead.
     serverActions: { bodySizeLimit: '6mb' },
   },

@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { clearSessionCookies, cookieNames, setSessionCookies } from '@/lib/auth/cookies';
 import { refreshSession } from '@/lib/auth/refresh';
 
-const PUBLIC_PATHS = ['/login'];
+const PUBLIC_PATHS = ['/login', '/forgot-password', '/reset-password'];
 
 // proxy refreshes an expired access token before rendering and sends signed-out visitors to login.
 // It is a convenience: pages and server actions still check the session themselves.
