@@ -16,17 +16,20 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  useSidebar,
 } from '@/components/ui/sidebar';
-import { activeNavItem, NAV_ITEMS } from './nav-items';
+import type { PermissionCode } from '@/lib/auth/session';
+import { activeNavItem, visibleNavGroups } from './nav-items';
 
-type AppSidebarProps = { footer: ReactNode };
+type AppSidebarProps = { footer: ReactNode; permissions: PermissionCode[] };
 
-export function AppSidebar({ footer }: AppSidebarProps) {
+export function AppSidebar({ footer, permissions }: AppSidebarProps) {
   const t = useTranslations();
+  const { setOpenMobile } = useSidebar();
   const active = activeNavItem(usePathname());
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -37,9 +40,7 @@ export function AppSidebar({ footer }: AppSidebarProps) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{t('common.app_name')}</span>
-                  <span className="text-muted-foreground truncate text-xs">
-                    {t('common.app_subtitle')}
-                  </span>
+                  <span className="truncate text-xs">{t('common.app_subtitle')}</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -47,25 +48,27 @@ export function AppSidebar({ footer }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>{t('nav.label')}</SidebarGroupLabel>
-          <SidebarMenu>
-            {NAV_ITEMS.map((item) => (
-              <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton
-                  asChild
-                  isActive={item === active}
-                  tooltip={t(`nav.${item.label}`)}
-                >
-                  <Link href={item.href}>
-                    <item.icon />
-                    <span>{t(`nav.${item.label}`)}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroup>
+        {visibleNavGroups(permissions).map((group) => (
+          <SidebarGroup key={group.label}>
+            <SidebarGroupLabel>{t(`nav.groups.${group.label}`)}</SidebarGroupLabel>
+            <SidebarMenu>
+              {group.items.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={item === active}
+                    tooltip={t(`nav.${item.label}`)}
+                  >
+                    <Link href={item.href} onClick={() => setOpenMobile(false)}>
+                      <item.icon />
+                      <span>{t(`nav.${item.label}`)}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
       <SidebarFooter>{footer}</SidebarFooter>
       <SidebarRail />

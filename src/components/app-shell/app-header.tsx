@@ -1,25 +1,23 @@
-'use client';
-
-import { usePathname } from 'next/navigation';
-import { useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
+import { CommandMenu } from '@/components/command-menu';
 import { LocaleSwitcher } from '@/components/locale-switcher';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Separator } from '@/components/ui/separator';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { activeNavItem } from './nav-items';
+import type { PermissionCode } from '@/lib/auth/session';
 
-export function AppHeader() {
-  const t = useTranslations('nav');
-  const active = activeNavItem(usePathname());
+type AppHeaderProps = { permissions: PermissionCode[]; profile: ReactNode };
 
+export function AppHeader({ permissions, profile }: AppHeaderProps) {
   return (
-    <header className="bg-background/80 sticky top-0 z-10 flex h-14 shrink-0 items-center gap-2 border-b px-4 backdrop-blur">
-      <SidebarTrigger className="-ml-1" />
-      <Separator orientation="vertical" className="my-auto mr-2 data-vertical:h-4" />
-      {active && <span className="text-sm font-medium">{t(active.label)}</span>}
-      <div className="ml-auto flex items-center gap-1">
+    <header className="bg-background/80 sticky top-0 z-20 flex h-16 shrink-0 items-center gap-3 rounded-t-xl px-4 backdrop-blur-lg sm:gap-4">
+      <SidebarTrigger variant="outline" />
+      <Separator orientation="vertical" className="my-auto data-vertical:h-6" />
+      <CommandMenu permissions={permissions} />
+      <div className="ml-auto flex items-center gap-1 sm:gap-2">
         <LocaleSwitcher />
         <ThemeToggle />
+        {profile}
       </div>
     </header>
   );

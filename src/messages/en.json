@@ -13,11 +13,40 @@
       "light": "Light",
       "dark": "Dark",
       "system": "System"
-    }
+    },
+    "actions": "Actions",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleting": "Deleting…",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving…",
+    "pagination": {
+      "first": "Go to first page",
+      "previous": "Go to previous page",
+      "next": "Go to next page",
+      "last": "Go to last page",
+      "page": "Go to page {page}",
+      "label": "Pagination"
+    },
+    "not_found": {
+      "title": "Page not found",
+      "description": "The page does not exist, or you do not have access to it.",
+      "back": "Back to dashboard"
+    },
+    "search": "Search",
+    "command_placeholder": "Type a command or search…",
+    "no_results": "No results found.",
+    "rows_per_page": "Rows per page",
+    "page_of": "Page {page} of {total}"
   },
   "nav": {
-    "label": "Menu",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "groups": {
+      "general": "General"
+    }
   },
   "dashboard": {
     "title": "Dashboard",
@@ -40,6 +69,14 @@
     "recaptcha_verification_failed": "Verification failed. Reload the page and try again",
     "timeout": "The server took too long to respond. Try again",
     "unreachable": "The server cannot be reached. Try again in a moment",
+    "email_already_exists": "This email is already in use",
+    "user_not_found": "This user no longer exists",
+    "insufficient_permission": "You do not have permission to do this",
+    "access_denied": "You do not have permission to do this",
+    "cannot_manage_stronger_user": "You cannot manage a user with more permissions than you",
+    "cannot_change_own_status": "You cannot change your own status",
+    "cannot_delete_self": "You cannot delete your own account",
+    "validation_error": "Some fields are invalid",
     "unknown": "Something went wrong. Try again"
   },
   "validation": {

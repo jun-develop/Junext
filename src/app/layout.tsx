@@ -3,6 +3,7 @@ import { Geist_Mono, Inter } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { ThemeProvider } from 'next-themes';
+import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import './globals.css';
 
@@ -38,6 +39,7 @@ export default async function RootLayout({ children }: LayoutProps<'/'>) {
         >
           <NextIntlClientProvider>
             <TooltipProvider>{children}</TooltipProvider>
+            <Toaster richColors position="bottom-right" />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

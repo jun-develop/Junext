@@ -1,14 +1,15 @@
 import 'server-only';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { cache } from 'react';
 import { unwrap } from '@/core/api/client';
 import { ApiError } from '@/core/api/errors';
 import { cookieNames } from '@/lib/auth/cookies';
 import { jungo } from '@/lib/jungo';
-import type { operations } from '@/lib/jungo-schema';
+import type { components, operations } from '@/lib/jungo-schema';
 
 export type Session = operations['getMe']['responses'][200]['content']['application/json']['data'];
+export type PermissionCode = components['schemas']['PermissionCode'];
 
 // /auth/me needs no permission, so 403 means the account itself is blocked: treat it as signed out.
 const SIGNED_OUT_STATUSES = [401, 403];
@@ -37,6 +38,16 @@ export async function requireSession(): Promise<Session> {
   const session = await getSession();
   if (!session) {
     redirect('/login');
+  }
+  return session;
+}
+
+// requirePermission returns the session when the user holds the permission; otherwise the page
+// answers 404, so it does not reveal what exists. Jungo checks the permission again on every call.
+export async function requirePermission(permission: PermissionCode): Promise<Session> {
+  const session = await requireSession();
+  if (!session.permissions.includes(permission)) {
+    notFound();
   }
   return session;
 }

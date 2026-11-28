@@ -9,6 +9,7 @@ describe('zod issues become translation keys', () => {
   it.each([
     ['missing value', z.object({ a: z.string() }), {}, { key: 'validation.required' }],
     ['wrong type', z.string(), 1, { key: 'validation.invalid_type' }],
+    ['blank string', z.string().min(2), '', { key: 'validation.required' }],
     ['short string', z.string().min(2), 'a', { key: 'validation.too_small_string', params: { limit: 2 } }],
     ['long string', z.string().max(3), 'abcd', { key: 'validation.too_big_string', params: { limit: 3 } }],
     ['small number', z.number().min(5), 1, { key: 'validation.too_small_number', params: { limit: 5 } }],

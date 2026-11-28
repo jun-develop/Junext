@@ -33,7 +33,8 @@ Mandatory. If a request conflicts with these rules or the architecture, ask inst
 - A feature lives in `src/features/<feature>/` with `messages/en.json` and `messages/vi.json` (the architecture and i18n tests already expect this).
 - `src/lib/`, `src/hooks/`, `src/components/` are shared and never import `src/features/` or `src/app/` (architecture test).
 - Only the server calls Jungo; the browser never calls it directly. Server-only modules start with `import 'server-only'`.
-- Call Jungo through `jungo` from `@/lib/jungo` (it adds the session token and the browser's IP) and `unwrap()` the result. Protected pages and server actions call `requireSession()` themselves; `src/proxy.ts` only refreshes tokens and redirects.
+- Call Jungo through `jungo` from `@/lib/jungo` (it adds the session token and the browser's IP) and `unwrap()` the result. Protected pages call `requirePermission(code)` (404 without it) or `requireSession()`; server actions check `session.permissions` and return `insufficient_permission`. `src/proxy.ts` only refreshes tokens and redirects. Jungo enforces permissions again.
+- `features/users` is the reference CRUD feature: copy its shape (`schemas.ts`, `data.ts`, `actions.ts`, `components/`, pages under `app/(app)/users` with the list in a `(list)` group so its `loading.tsx` does not cover detail pages).
 - No circular imports. Shared logic used by two features moves to `src/core/` (logic) or `src/components/` (UI), never copied.
 - Add a layer, wrapper or generic helper only when a second real caller exists.
 
@@ -123,7 +124,7 @@ export async function createRole(input: CreateRoleInput): Promise<Role> {
 ### UI
 
 - Reuse `src/components/ui`: Alert, AlertDialog (confirmations), Badge, Breadcrumb, Button, Card, Dialog, DropdownMenu, Empty (empty states), Field (form fields and errors), Input, Select, Sheet, Sidebar, Skeleton (loading), Table and Pagination, Tabs, Tooltip, and `Toaster` from `ui/sonner`.
-- The app shell lives in `src/components/app-shell/`; a feature adds its sidebar entry to `NAV_ITEMS` in `nav-items.ts` and its label under `nav` in the shared messages. `ThemeToggle` and `LocaleSwitcher` are in `src/components/`. No shared page header or data table exists yet: build it once in `src/components/` when the first feature needs it, then reuse it. `Toaster` must be mounted in the root layout before the first toast.
+- The app shell lives in `src/components/app-shell/`; a feature adds its sidebar entry to a group in `NAV_GROUPS` (`nav-items.ts`) and its label under `nav` in the shared messages; the ⌘K `CommandMenu` lists the same entries. `ThemeToggle` and `LocaleSwitcher` are in `src/components/`. Shared page parts: `PageHeader` (title, description, actions), `TableSearch` (debounced `?search=`), `SortableHeader` (`?sort_by=&sort_order=`) and `ListPagination` with `PageSizeSelect` (Jungo pagination as URL links). List state always lives in the URL. `Toaster` is mounted in the root layout. There is no generic data table: a feature renders `ui/table` itself (see `features/users`).
 - A component used by only one feature stays in that feature. Move it to `src/components/` when a second feature needs it.
 - Colours come from theme tokens (`bg-background`, `text-muted-foreground`). No hex colours. Arbitrary Tailwind values need a comment explaining why.
 - Icons from `lucide-react`. Use semantic HTML, labelled controls, visible focus, and pending feedback on every action.

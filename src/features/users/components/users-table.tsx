@@ -1,0 +1,100 @@
+import { UsersIcon } from 'lucide-react';
+import Link from 'next/link';
+import { useFormatter, useTranslations } from 'next-intl';
+import { SortableHeader } from '@/components/sortable-header';
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import type { UserPage } from '@/features/users/data';
+import type { UserListQuery } from '@/features/users/schemas';
+import { UserActions } from './user-actions';
+import { UserStatusBadge } from './user-identity';
+
+type UsersTableProps = {
+  users: UserPage['items'];
+  query: UserListQuery;
+  canUpdate: boolean;
+  canDelete: boolean;
+};
+
+export function UsersTable({ users, query, canUpdate, canDelete }: UsersTableProps) {
+  const t = useTranslations('users');
+  const format = useFormatter();
+  const sortable = (label: string, field: UserListQuery['sort_by']) => (
+    <SortableHeader label={label} field={field} searchParams={query} />
+  );
+
+  return (
+    <div className="overflow-hidden rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow className="hover:bg-transparent">
+            <TableHead className="pl-4">{sortable(t('columns.name'), 'first_name')}</TableHead>
+            <TableHead>{sortable(t('columns.email'), 'email')}</TableHead>
+            <TableHead className="hidden md:table-cell">{t('columns.phone')}</TableHead>
+            <TableHead className="hidden lg:table-cell">
+              {sortable(t('columns.created_at'), 'created_at')}
+            </TableHead>
+            <TableHead>{t('columns.status')}</TableHead>
+            <TableHead className="w-12">
+              <span className="sr-only">{t('columns.actions')}</span>
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {users.length === 0 && (
+            <TableRow className="hover:bg-transparent">
+              <TableCell colSpan={6}>
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyMedia variant="icon">
+                      <UsersIcon />
+                    </EmptyMedia>
+                    <EmptyTitle>
+                      {query.search ? t('empty_filtered_title') : t('empty_title')}
+                    </EmptyTitle>
+                    <EmptyDescription>
+                      {query.search ? t('empty_filtered_description') : t('empty_description')}
+                    </EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
+              </TableCell>
+            </TableRow>
+          )}
+          {users.map((user) => (
+            <TableRow key={user.uuid}>
+              <TableCell className="max-w-48 truncate pl-4 font-medium">
+                <Link href={`/users/${user.uuid}`} className="hover:underline">
+                  {user.first_name} {user.last_name}
+                </Link>
+              </TableCell>
+              <TableCell className="max-w-64 truncate">{user.email}</TableCell>
+              <TableCell className="hidden md:table-cell">{user.phone_number ?? '—'}</TableCell>
+              <TableCell className="hidden lg:table-cell">
+                {format.dateTime(new Date(user.created_at), { dateStyle: 'medium' })}
+              </TableCell>
+              <TableCell>
+                <UserStatusBadge status={user.status} />
+              </TableCell>
+              <TableCell className="pr-4 text-right">
+                <UserActions user={user} canUpdate={canUpdate} canDelete={canDelete} />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}

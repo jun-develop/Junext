@@ -1,0 +1,45 @@
+{
+  "users": {
+    "title": "Danh sách người dùng",
+    "description": "Quản lý người dùng và quyền truy cập của họ.",
+    "create": "Thêm người dùng",
+    "edit": "Sửa",
+    "details": "Thông tin",
+    "updated_at": "Cập nhật lần cuối",
+    "create_title": "Thêm người dùng",
+    "create_description": "Tạo tài khoản mới. Người dùng có thể đăng nhập ngay.",
+    "edit_title": "Sửa người dùng",
+    "search_placeholder": "Lọc người dùng…",
+    "columns": {
+      "name": "Họ tên",
+      "email": "Email",
+      "phone": "Số điện thoại",
+      "status": "Trạng thái",
+      "created_at": "Ngày đăng ký",
+      "actions": "Thao tác"
+    },
+    "fields": {
+      "first_name": "Tên",
+      "last_name": "Họ",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "phone_number": "Số điện thoại",
+      "status": "Trạng thái"
+    },
+    "status": {
+      "active": "Hoạt động",
+      "inactive": "Tạm khoá"
+    },
+    "password_rule": "Ít nhất 8 ký tự, gồm chữ hoa, chữ thường, chữ số và ký tự đặc biệt",
+    "phone_rule": "Từ 7 đến 15 chữ số, có thể bắt đầu bằng +",
+    "empty_title": "Chưa có người dùng",
+    "empty_description": "Người dùng bạn thêm sẽ hiển thị ở đây.",
+    "empty_filtered_title": "Không tìm thấy người dùng",
+    "empty_filtered_description": "Thử tìm bằng tên hoặc email khác.",
+    "created": "Đã tạo người dùng",
+    "updated": "Đã cập nhật người dùng",
+    "deleted": "Đã xoá người dùng",
+    "delete_title": "Xoá người dùng này?",
+    "delete_description": "{email} sẽ mất quyền truy cập ngay lập tức. Không thể hoàn tác."
+  }
+}

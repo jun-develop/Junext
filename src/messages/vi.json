@@ -13,11 +13,40 @@
       "light": "Sáng",
       "dark": "Tối",
       "system": "Theo hệ thống"
-    }
+    },
+    "actions": "Thao tác",
+    "view": "Xem",
+    "edit": "Sửa",
+    "delete": "Xoá",
+    "deleting": "Đang xoá…",
+    "cancel": "Huỷ",
+    "save": "Lưu",
+    "saving": "Đang lưu…",
+    "pagination": {
+      "first": "Về trang đầu",
+      "previous": "Trang trước",
+      "next": "Trang sau",
+      "last": "Đến trang cuối",
+      "page": "Đến trang {page}",
+      "label": "Phân trang"
+    },
+    "not_found": {
+      "title": "Không tìm thấy trang",
+      "description": "Trang không tồn tại hoặc bạn không có quyền truy cập.",
+      "back": "Về trang tổng quan"
+    },
+    "search": "Tìm kiếm",
+    "command_placeholder": "Nhập lệnh hoặc tìm kiếm…",
+    "no_results": "Không có kết quả.",
+    "rows_per_page": "Số dòng mỗi trang",
+    "page_of": "Trang {page} / {total}"
   },
   "nav": {
-    "label": "Danh mục",
-    "dashboard": "Tổng quan"
+    "dashboard": "Tổng quan",
+    "users": "Người dùng",
+    "groups": {
+      "general": "Chung"
+    }
   },
   "dashboard": {
     "title": "Tổng quan",
@@ -40,6 +69,14 @@
     "recaptcha_verification_failed": "Xác minh thất bại. Hãy tải lại trang và thử lại",
     "timeout": "Máy chủ phản hồi quá lâu. Hãy thử lại",
     "unreachable": "Không kết nối được máy chủ. Hãy thử lại sau ít phút",
+    "email_already_exists": "Email này đã được sử dụng",
+    "user_not_found": "Người dùng này không còn tồn tại",
+    "insufficient_permission": "Bạn không có quyền thực hiện thao tác này",
+    "access_denied": "Bạn không có quyền thực hiện thao tác này",
+    "cannot_manage_stronger_user": "Bạn không thể quản lý người dùng có nhiều quyền hơn bạn",
+    "cannot_change_own_status": "Bạn không thể đổi trạng thái của chính mình",
+    "cannot_delete_self": "Bạn không thể xoá tài khoản của chính mình",
+    "validation_error": "Một số trường không hợp lệ",
     "unknown": "Đã có lỗi xảy ra. Hãy thử lại"
   },
   "validation": {

@@ -5,13 +5,14 @@ import type { z } from '@/core/validation';
 // per-field messages, never a stack or an internal message.
 export type ActionError = { reason: string; fieldErrors: Record<string, string> };
 
+// validationError keeps the first issue of each field: zod reports them in schema order, so a blank
+// field says "required" rather than a later rule about its format.
 export function validationError(error: z.ZodError): ActionError {
-  return {
-    reason: 'validation_error',
-    fieldErrors: Object.fromEntries(
-      error.issues.map((issue) => [issue.path.join('.'), issue.message]),
-    ),
-  };
+  const fieldErrors: Record<string, string> = {};
+  for (const issue of error.issues) {
+    fieldErrors[issue.path.join('.')] ??= issue.message;
+  }
+  return { reason: 'validation_error', fieldErrors };
 }
 
 // toActionError converts a failed Jungo call for the browser; any other error is a bug and propagates.

@@ -29,18 +29,13 @@ export function issueKey(iss: $ZodRawIssue): IssueMessage {
     case 'invalid_type':
       return { key: iss.input === undefined ? 'validation.required' : 'validation.invalid_type' };
     case 'too_small':
-    case 'too_big': {
-      const origin = (BOUNDED_ORIGINS as readonly string[]).includes(iss.origin)
-        ? iss.origin
-        : null;
-      const limit = Number(iss.code === 'too_small' ? iss.minimum : iss.maximum);
-      return origin
-        ? {
-            key: `validation.${iss.code}_${origin}`,
-            params: { limit },
-          }
-        : { key: 'validation.invalid' };
-    }
+      // A blank text field reads better as "required" than as "at least 2 characters".
+      if (iss.origin === 'string' && iss.input === '') {
+        return { key: 'validation.required' };
+      }
+      return boundedKey(iss);
+    case 'too_big':
+      return boundedKey(iss);
     case 'invalid_format':
       return {
         key: (FORMATS as readonly string[]).includes(iss.format)
@@ -52,6 +47,17 @@ export function issueKey(iss: $ZodRawIssue): IssueMessage {
     default:
       return { key: 'validation.invalid' };
   }
+}
+
+function boundedKey(iss: Extract<$ZodRawIssue, { code: 'too_small' | 'too_big' }>): IssueMessage {
+  const origin = (BOUNDED_ORIGINS as readonly string[]).includes(iss.origin) ? iss.origin : null;
+  const limit = Number(iss.code === 'too_small' ? iss.minimum : iss.maximum);
+  return origin
+    ? {
+        key: `validation.${iss.code}_${origin}`,
+        params: { limit },
+      }
+    : { key: 'validation.invalid' };
 }
 
 z.config({
