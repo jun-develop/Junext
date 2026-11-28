@@ -24,7 +24,10 @@
       "email": "Email",
       "password": "Mật khẩu",
       "phone_number": "Số điện thoại",
-      "status": "Trạng thái"
+      "status": "Trạng thái tài khoản",
+      "confirm_password": "Xác nhận mật khẩu",
+      "avatar": "Ảnh đại diện",
+      "roles": "Vai trò"
     },
     "status": {
       "active": "Hoạt động",
@@ -40,6 +43,40 @@
     "updated": "Đã cập nhật người dùng",
     "deleted": "Đã xoá người dùng",
     "delete_title": "Xoá người dùng này?",
-    "delete_description": "{email} sẽ mất quyền truy cập ngay lập tức. Không thể hoàn tác."
+    "delete_description": "{email} sẽ mất quyền truy cập ngay lập tức. Không thể hoàn tác.",
+    "sections": {
+      "account": "Thông tin tài khoản",
+      "account_hint": "Email và mật khẩu dùng để đăng nhập.",
+      "profile": "Thông tin cá nhân",
+      "profile_hint": "Tên, số điện thoại và ảnh đại diện hiển thị trong trang quản trị.",
+      "access": "Phân quyền & truy cập",
+      "access_hint": "Người dùng được làm gì và có được đăng nhập hay không."
+    },
+    "email_locked": "Email đăng nhập không thể thay đổi.",
+    "password_rules": {
+      "length": "Ít nhất 8 ký tự",
+      "lowercase": "Một chữ thường",
+      "uppercase": "Một chữ hoa",
+      "number": "Một chữ số",
+      "symbol": "Một ký tự đặc biệt, ví dụ ! hoặc #"
+    },
+    "back_to_list": "Quay lại danh sách",
+    "back_to_user": "Quay lại người dùng",
+    "password_placeholder": "Tạo mật khẩu",
+    "confirm_password_placeholder": "Nhập lại mật khẩu",
+    "first_name_placeholder": "Văn A",
+    "last_name_placeholder": "Nguyễn",
+    "avatar_pick": "Tải ảnh lên",
+    "avatar_remove": "Xoá",
+    "avatar_hint": "JPG, PNG hoặc WebP, tối đa 5 MB.",
+    "avatar_too_large": "Ảnh phải nhỏ hơn hoặc bằng 5 MB",
+    "avatar_type": "Hãy dùng ảnh JPG, PNG hoặc WebP",
+    "password_mismatch": "Mật khẩu nhập lại không khớp",
+    "saved_with_warning": "Đã lưu, nhưng một phần thay đổi bị lỗi: {detail}",
+    "roles_no_permission": "Bạn không có quyền gán vai trò.",
+    "roles_hint": "Người dùng sẽ có mọi quyền của các vai trò bạn chọn.",
+    "self_roles_locked": "Bạn không thể đổi vai trò của chính mình.",
+    "self_status_locked": "Bạn không thể đổi trạng thái của chính mình.",
+    "role_permission_count": "{count, plural, =0 {Không có quyền} other {# quyền}}"
   }
 }

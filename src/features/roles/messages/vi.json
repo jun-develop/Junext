@@ -1,0 +1,82 @@
+{
+  "roles": {
+    "title": "Vai trò",
+    "description": "Gom quyền thành vai trò và gán cho người dùng.",
+    "create": "Thêm vai trò",
+    "edit": "Sửa",
+    "details": "Thông tin",
+    "created_at": "Ngày tạo",
+    "create_title": "Thêm vai trò",
+    "create_description": "Đặt tên vai trò và chọn những việc nó được làm.",
+    "edit_title": "Sửa vai trò",
+    "search_placeholder": "Lọc vai trò…",
+    "columns": {
+      "name": "Tên",
+      "code": "Mã",
+      "permissions": "Quyền",
+      "users": "Người dùng",
+      "type": "Loại",
+      "actions": "Thao tác"
+    },
+    "fields": {
+      "name": "Tên",
+      "code": "Mã",
+      "permissions": "Quyền"
+    },
+    "code_hint": "Tự điền theo tên. Chỉ gồm chữ thường và dấu gạch dưới.",
+    "system": "Hệ thống",
+    "custom": "Tuỳ chỉnh",
+    "system_hint": "Vai trò có sẵn. Không thể sửa hoặc xoá.",
+    "permission_count": "{count, plural, =0 {Không có quyền} other {# quyền}}",
+    "user_count": "{count, plural, =0 {Chưa có ai} other {# người dùng}}",
+    "no_permissions": "Vai trò này chưa có quyền nào.",
+    "no_roles": "Chưa được gán vai trò nào.",
+    "empty_title": "Chưa có vai trò",
+    "empty_description": "Vai trò bạn thêm sẽ hiển thị ở đây.",
+    "empty_filtered_title": "Không tìm thấy vai trò",
+    "empty_filtered_description": "Thử tìm bằng tên hoặc mã khác.",
+    "created": "Đã tạo vai trò",
+    "updated": "Đã cập nhật vai trò",
+    "deleted": "Đã xoá vai trò",
+    "delete_title": "Xoá vai trò này?",
+    "delete_description": "{name} sẽ bị xoá{count, plural, =0 {} other { khỏi # người dùng}}. Không thể hoàn tác.",
+    "resources": {
+      "users": "Người dùng",
+      "roles": "Vai trò",
+      "audit_logs": "Nhật ký"
+    },
+    "permissions": {
+      "users:read": "Xem người dùng",
+      "users:create": "Tạo người dùng",
+      "users:update": "Sửa người dùng",
+      "users:delete": "Xoá người dùng",
+      "roles:read": "Xem vai trò",
+      "roles:create": "Tạo vai trò",
+      "roles:update": "Sửa vai trò",
+      "roles:delete": "Xoá vai trò",
+      "roles:assign": "Gán vai trò cho người dùng",
+      "audit_logs:read": "Xem nhật ký"
+    },
+    "code_rule": "Chỉ dùng chữ thường và dấu gạch dưới",
+    "sections": {
+      "general": "Thông tin chung",
+      "general_hint": "Tên rõ ràng giúp quản trị viên chọn đúng vai trò.",
+      "permissions": "Phân quyền",
+      "permissions_hint": "Chọn những việc người có vai trò này được làm. Bạn chỉ cấp được những quyền mà bạn đang có."
+    },
+    "name_placeholder": "Biên tập viên",
+    "code_locked": "Mã không thể thay đổi sau khi tạo vai trò.",
+    "select_all": "Chọn tất cả quyền",
+    "selected_count": "Đã chọn {count}/{total}",
+    "select_module": "Chọn tất cả quyền {module}",
+    "locked": "Bạn không có quyền này",
+    "resource_hints": {
+      "users": "Tài khoản được đăng nhập vào trang quản trị",
+      "roles": "Vai trò, quyền của chúng và ai đang có",
+      "audit_logs": "Lịch sử thay đổi trong hệ thống"
+    },
+    "back_to_list": "Quay lại danh sách",
+    "back_to_role": "Quay lại vai trò",
+    "edit_description": "Quản lý tên và quyền của {name}."
+  }
+}

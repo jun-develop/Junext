@@ -22,3 +22,10 @@ export function toActionError(error: unknown): ActionError {
   }
   return { reason: error.reason, fieldErrors: error.fieldErrors };
 }
+
+// ActionResult is what an action without a form returns, such as a delete from a confirmation dialog.
+export type ActionResult = { status: 'error'; error: ActionError } | { status: 'success' };
+
+export function forbiddenError(): ActionError {
+  return { reason: 'insufficient_permission', fieldErrors: {} };
+}

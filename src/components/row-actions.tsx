@@ -23,47 +23,44 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import type { ActionResult } from '@/core/api/action-error';
 import { translateKey } from '@/core/i18n';
-import { deleteUser } from '@/features/users/actions';
 
-type UserActionsProps = {
-  user: { uuid: string; email: string };
-  canUpdate: boolean;
-  canDelete: boolean;
-  showView?: boolean;
-  afterDeleteHref?: string;
+type DeleteConfig = {
+  action: () => Promise<ActionResult>;
+  title: string;
+  description: string;
+  successMessage: string;
+  redirectTo?: string;
 };
 
-export function UserActions({
-  user,
-  canUpdate,
-  canDelete,
-  showView = true,
-  afterDeleteHref,
-}: UserActionsProps) {
+type RowActionsProps = { viewHref?: string; editHref?: string; onDelete?: DeleteConfig };
+
+// RowActions is the ⋯ menu of a record: view, edit and a confirmed delete. Omitted entries are hidden.
+export function RowActions({ viewHref, editHref, onDelete }: RowActionsProps) {
   const t = useTranslations();
   const router = useRouter();
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  function handleDelete() {
+  if (!viewHref && !editHref && !onDelete) {
+    return null;
+  }
+
+  function handleDelete(config: DeleteConfig) {
     startTransition(async () => {
-      const result = await deleteUser(user.uuid);
+      const result = await config.action();
       if (result.status === 'error') {
         const reason = result.error.reason;
         toast.error(translateKey(t, `api_errors.${reason}`) ?? t('api_errors.unknown'));
         return;
       }
       setIsConfirmOpen(false);
-      toast.success(t('users.deleted'));
-      if (afterDeleteHref) {
-        router.push(afterDeleteHref);
+      toast.success(config.successMessage);
+      if (config.redirectTo) {
+        router.push(config.redirectTo);
       }
     });
-  }
-
-  if (!showView && !canUpdate && !canDelete) {
-    return null;
   }
 
   return (
@@ -75,25 +72,25 @@ export function UserActions({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-40">
-          {showView && (
+          {viewHref && (
             <DropdownMenuItem asChild>
-              <Link href={`/users/${user.uuid}`}>
+              <Link href={viewHref}>
                 <EyeIcon />
                 {t('common.view')}
               </Link>
             </DropdownMenuItem>
           )}
-          {canUpdate && (
+          {editHref && (
             <DropdownMenuItem asChild>
-              <Link href={`/users/${user.uuid}/edit`}>
+              <Link href={editHref}>
                 <PencilIcon />
                 {t('common.edit')}
               </Link>
             </DropdownMenuItem>
           )}
-          {canDelete && (
+          {onDelete && (
             <>
-              <DropdownMenuSeparator />
+              {(viewHref || editHref) && <DropdownMenuSeparator />}
               <DropdownMenuItem variant="destructive" onSelect={() => setIsConfirmOpen(true)}>
                 <Trash2Icon />
                 {t('common.delete')}
@@ -102,22 +99,26 @@ export function UserActions({
           )}
         </DropdownMenuContent>
       </DropdownMenu>
-      <AlertDialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t('users.delete_title')}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {t('users.delete_description', { email: user.email })}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>{t('common.cancel')}</AlertDialogCancel>
-            <Button variant="destructive" disabled={isPending} onClick={handleDelete}>
-              {isPending ? t('common.deleting') : t('common.delete')}
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {onDelete && (
+        <AlertDialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{onDelete.title}</AlertDialogTitle>
+              <AlertDialogDescription>{onDelete.description}</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel disabled={isPending}>{t('common.cancel')}</AlertDialogCancel>
+              <Button
+                variant="destructive"
+                disabled={isPending}
+                onClick={() => handleDelete(onDelete)}
+              >
+                {isPending ? t('common.deleting') : t('common.delete')}
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </>
   );
 }

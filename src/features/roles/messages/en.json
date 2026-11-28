@@ -1,0 +1,82 @@
+{
+  "roles": {
+    "title": "Roles",
+    "description": "Group permissions into roles and assign them to users.",
+    "create": "Add role",
+    "edit": "Edit",
+    "details": "Details",
+    "created_at": "Created",
+    "create_title": "Add role",
+    "create_description": "Name the role and pick what it can do.",
+    "edit_title": "Edit role",
+    "search_placeholder": "Filter roles…",
+    "columns": {
+      "name": "Name",
+      "code": "Code",
+      "permissions": "Permissions",
+      "users": "Users",
+      "type": "Type",
+      "actions": "Actions"
+    },
+    "fields": {
+      "name": "Name",
+      "code": "Code",
+      "permissions": "Permissions"
+    },
+    "code_hint": "Filled in from the name. Lowercase letters and underscores only.",
+    "system": "System",
+    "custom": "Custom",
+    "system_hint": "Built-in role. It cannot be edited or deleted.",
+    "permission_count": "{count, plural, =0 {No permissions} one {# permission} other {# permissions}}",
+    "user_count": "{count, plural, =0 {No users} one {# user} other {# users}}",
+    "no_permissions": "This role has no permissions.",
+    "no_roles": "No roles assigned.",
+    "empty_title": "No roles yet",
+    "empty_description": "Roles you add will appear here.",
+    "empty_filtered_title": "No matching roles",
+    "empty_filtered_description": "Try a different name or code.",
+    "created": "Role created",
+    "updated": "Role updated",
+    "deleted": "Role deleted",
+    "delete_title": "Delete this role?",
+    "delete_description": "{name} will be removed {count, plural, =0 {} one {from # user} other {from # users}}. This cannot be undone.",
+    "resources": {
+      "users": "Users",
+      "roles": "Roles",
+      "audit_logs": "Audit logs"
+    },
+    "permissions": {
+      "users:read": "View users",
+      "users:create": "Create users",
+      "users:update": "Edit users",
+      "users:delete": "Delete users",
+      "roles:read": "View roles",
+      "roles:create": "Create roles",
+      "roles:update": "Edit roles",
+      "roles:delete": "Delete roles",
+      "roles:assign": "Assign roles to users",
+      "audit_logs:read": "View audit logs"
+    },
+    "code_rule": "Use lowercase letters and underscores only",
+    "sections": {
+      "general": "General",
+      "general_hint": "A clear name helps admins pick the right role.",
+      "permissions": "Permissions",
+      "permissions_hint": "Choose what users with this role can do. You can only grant permissions you hold yourself."
+    },
+    "name_placeholder": "Content editor",
+    "code_locked": "The code cannot be changed after the role is created.",
+    "select_all": "Select all permissions",
+    "selected_count": "{count} of {total} selected",
+    "select_module": "Select all {module} permissions",
+    "locked": "You do not hold this permission",
+    "resource_hints": {
+      "users": "Accounts that can sign in to the admin console",
+      "roles": "Roles, their permissions and who has them",
+      "audit_logs": "The record of changes made in the system"
+    },
+    "back_to_list": "Back to roles",
+    "back_to_role": "Back to role",
+    "edit_description": "Manage the name and permissions of {name}."
+  }
+}

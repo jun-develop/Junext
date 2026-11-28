@@ -63,14 +63,19 @@
         "icon": "Compact",
         "offcanvas": "Full layout"
       }
-    }
+    },
+    "save_changes": "Save changes",
+    "show_password": "Show password",
+    "hide_password": "Hide password",
+    "error": "Error"
   },
   "nav": {
     "dashboard": "Dashboard",
     "users": "Users",
     "groups": {
       "general": "General"
-    }
+    },
+    "roles": "Roles"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -101,6 +106,12 @@
     "cannot_change_own_status": "You cannot change your own status",
     "cannot_delete_self": "You cannot delete your own account",
     "validation_error": "Some fields are invalid",
+    "role_already_exists": "A role with this code already exists",
+    "role_not_found": "This role no longer exists",
+    "system_role_immutable": "Built-in roles cannot be changed",
+    "cannot_grant_unheld_permission": "You can only grant permissions you hold",
+    "cannot_change_own_roles": "You cannot change your own roles",
+    "invalid_role_code": "Use lowercase letters and underscores only",
     "unknown": "Something went wrong. Try again"
   },
   "validation": {

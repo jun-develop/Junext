@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactCompiler: true,
   cacheComponents: false,
+  experimental: {
+    // Avatars go through a server action; Jungo accepts up to 5 MB, plus room for multipart overhead.
+    serverActions: { bodySizeLimit: '6mb' },
+  },
   turbopack: {
     rules: {
       '*.css': {

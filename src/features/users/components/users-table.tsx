@@ -1,6 +1,7 @@
 import { UsersIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useFormatter, useTranslations } from 'next-intl';
+import { RowActions } from '@/components/row-actions';
 import { SortableHeader } from '@/components/sortable-header';
 import {
   Empty,
@@ -17,9 +18,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { deleteUser } from '@/features/users/actions';
 import type { UserPage } from '@/features/users/data';
 import type { UserListQuery } from '@/features/users/schemas';
-import { UserActions } from './user-actions';
 import { UserStatusBadge } from './user-identity';
 
 type UsersTableProps = {
@@ -89,7 +90,20 @@ export function UsersTable({ users, query, canUpdate, canDelete }: UsersTablePro
                 <UserStatusBadge status={user.status} />
               </TableCell>
               <TableCell className="pr-4 text-right">
-                <UserActions user={user} canUpdate={canUpdate} canDelete={canDelete} />
+                <RowActions
+                  viewHref={`/users/${user.uuid}`}
+                  editHref={canUpdate ? `/users/${user.uuid}/edit` : undefined}
+                  onDelete={
+                    canDelete
+                      ? {
+                          action: deleteUser.bind(null, user.uuid),
+                          title: t('delete_title'),
+                          description: t('delete_description', { email: user.email }),
+                          successMessage: t('deleted'),
+                        }
+                      : undefined
+                  }
+                />
               </TableCell>
             </TableRow>
           ))}

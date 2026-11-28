@@ -51,3 +51,9 @@ export async function requirePermission(permission: PermissionCode): Promise<Ses
   }
   return session;
 }
+
+// hasPermission tells a server action whether the signed-in user holds the permission.
+export async function hasPermission(permission: PermissionCode): Promise<boolean> {
+  const session = await requireSession();
+  return session.permissions.includes(permission);
+}

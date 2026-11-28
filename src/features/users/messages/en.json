@@ -24,7 +24,10 @@
       "email": "Email",
       "password": "Password",
       "phone_number": "Phone number",
-      "status": "Status"
+      "status": "Account status",
+      "confirm_password": "Confirm password",
+      "avatar": "Avatar",
+      "roles": "Roles"
     },
     "status": {
       "active": "Active",
@@ -40,6 +43,40 @@
     "updated": "User updated",
     "deleted": "User deleted",
     "delete_title": "Delete this user?",
-    "delete_description": "{email} will lose access immediately. This cannot be undone."
+    "delete_description": "{email} will lose access immediately. This cannot be undone.",
+    "sections": {
+      "account": "Account information",
+      "account_hint": "Sign-in email and password.",
+      "profile": "Personal details",
+      "profile_hint": "Name, phone number and picture shown across the admin console.",
+      "access": "Permissions & access",
+      "access_hint": "What this user can do and whether they can sign in."
+    },
+    "email_locked": "The sign-in email cannot be changed.",
+    "password_rules": {
+      "length": "At least 8 characters",
+      "lowercase": "A lowercase letter",
+      "uppercase": "An uppercase letter",
+      "number": "A number",
+      "symbol": "A symbol, such as ! or #"
+    },
+    "back_to_list": "Back to users",
+    "back_to_user": "Back to user",
+    "password_placeholder": "Create a password",
+    "confirm_password_placeholder": "Repeat the password",
+    "first_name_placeholder": "Jane",
+    "last_name_placeholder": "Doe",
+    "avatar_pick": "Upload image",
+    "avatar_remove": "Remove",
+    "avatar_hint": "JPG, PNG or WebP, up to 5 MB.",
+    "avatar_too_large": "The image must be 5 MB or smaller",
+    "avatar_type": "Use a JPG, PNG or WebP image",
+    "password_mismatch": "The passwords do not match",
+    "saved_with_warning": "Saved, but part of the change failed: {detail}",
+    "roles_no_permission": "You do not have permission to assign roles.",
+    "roles_hint": "The user gets every permission of the roles you tick.",
+    "self_roles_locked": "You cannot change your own roles.",
+    "self_status_locked": "You cannot change your own status.",
+    "role_permission_count": "{count, plural, =0 {No permissions} one {# permission} other {# permissions}}"
   }
 }

@@ -1,9 +1,11 @@
-import { PencilIcon } from 'lucide-react';
+import { ArrowLeftIcon, PencilIcon } from 'lucide-react';
 import Link from 'next/link';
 import { getFormatter, getTranslations } from 'next-intl/server';
+import { RowActions } from '@/components/row-actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { UserActions } from '@/features/users/components/user-actions';
+import { UserRolesCard } from '@/features/roles/components/user-roles-card';
+import { deleteUser } from '@/features/users/actions';
 import { UserIdentity, UserStatusBadge } from '@/features/users/components/user-identity';
 import { getUser } from '@/features/users/data';
 import { requirePermission } from '@/lib/auth/session';
@@ -30,6 +32,11 @@ export default async function UserPage({ params }: PageProps<'/users/[uuid]'>) {
     <>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/users" aria-label={t('back_to_list')}>
+              <ArrowLeftIcon />
+            </Link>
+          </Button>
           <UserIdentity user={user} size="lg" />
           <UserStatusBadge status={user.status} />
         </div>
@@ -42,13 +49,17 @@ export default async function UserPage({ params }: PageProps<'/users/[uuid]'>) {
               </Link>
             </Button>
           )}
-          <UserActions
-            user={user}
-            canUpdate={false}
-            canDelete={session.permissions.includes('users:delete')}
-            showView={false}
-            afterDeleteHref="/users"
-          />
+          {session.permissions.includes('users:delete') && (
+            <RowActions
+              onDelete={{
+                action: deleteUser.bind(null, user.uuid),
+                title: t('delete_title'),
+                description: t('delete_description', { email: user.email }),
+                successMessage: t('deleted'),
+                redirectTo: '/users',
+              }}
+            />
+          )}
         </div>
       </div>
       <Card className="max-w-2xl">
@@ -66,6 +77,7 @@ export default async function UserPage({ params }: PageProps<'/users/[uuid]'>) {
           </dl>
         </CardContent>
       </Card>
+      {session.permissions.includes('roles:read') && <UserRolesCard userUuid={user.uuid} />}
     </>
   );
 }

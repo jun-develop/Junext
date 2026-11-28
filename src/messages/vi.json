@@ -63,14 +63,19 @@
         "icon": "Thu gọn",
         "offcanvas": "Toàn màn hình"
       }
-    }
+    },
+    "save_changes": "Lưu thay đổi",
+    "show_password": "Hiện mật khẩu",
+    "hide_password": "Ẩn mật khẩu",
+    "error": "Lỗi"
   },
   "nav": {
     "dashboard": "Tổng quan",
     "users": "Người dùng",
     "groups": {
       "general": "Chung"
-    }
+    },
+    "roles": "Vai trò"
   },
   "dashboard": {
     "title": "Tổng quan",
@@ -101,6 +106,12 @@
     "cannot_change_own_status": "Bạn không thể đổi trạng thái của chính mình",
     "cannot_delete_self": "Bạn không thể xoá tài khoản của chính mình",
     "validation_error": "Một số trường không hợp lệ",
+    "role_already_exists": "Đã có vai trò dùng mã này",
+    "role_not_found": "Vai trò này không còn tồn tại",
+    "system_role_immutable": "Không thể thay đổi vai trò có sẵn",
+    "cannot_grant_unheld_permission": "Bạn chỉ cấp được những quyền mà bạn đang có",
+    "cannot_change_own_roles": "Bạn không thể đổi vai trò của chính mình",
+    "invalid_role_code": "Chỉ dùng chữ thường và dấu gạch dưới",
     "unknown": "Đã có lỗi xảy ra. Hãy thử lại"
   },
   "validation": {
