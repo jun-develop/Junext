@@ -25,3 +25,20 @@ export function resolveLocale<L extends string>(input: {
 
   return ranked.map((x) => x.lang).find(supported) ?? fallback;
 }
+
+// Accepts next-intl's typed `t`. Keys typed as never: they come from runtime data instead of the catalogue type.
+export type Translator = {
+  (key: never, params?: never): string;
+  has: (key: never) => boolean;
+};
+
+// translateKey translates a key known only at runtime (an API reason, a zod message), or returns null
+// when the catalogue lacks it.
+export function translateKey(
+  t: Translator,
+  key: string,
+  params?: Record<string, string | number>,
+): string | null {
+  // Safe: has() confirms the key exists before t() is called with it.
+  return t.has(key as never) ? t(key as never, params as never) : null;
+}

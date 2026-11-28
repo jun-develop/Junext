@@ -28,8 +28,17 @@ export async function unwrap<T>(pending: Promise<JungoResponse<T>>): Promise<T> 
 
 async function send(request: Request, timeoutMs: number): Promise<Response> {
   const signal = AbortSignal.any([request.signal, AbortSignal.timeout(timeoutMs)]);
+  // A URL and a buffered body, not the Request: Next's patched fetch rebuilds a Request with a
+  // stream body, and undici then fails every 401 to a POST with "expected non-null body source".
+  const body = request.body ? await request.arrayBuffer() : undefined;
   try {
-    return await fetch(request, { signal, cache: 'no-store' });
+    return await fetch(request.url, {
+      method: request.method,
+      headers: request.headers,
+      body,
+      signal,
+      cache: 'no-store',
+    });
   } catch (error) {
     throw toTransportError(request, error);
   }

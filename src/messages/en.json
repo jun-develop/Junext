@@ -2,9 +2,21 @@
   "common": {
     "app_name": "Junext"
   },
-  "home": {
-    "title": "Junext is running",
-    "description": "Sign-in and features come next."
+  "dashboard": {
+    "title": "Dashboard",
+    "greeting": "Welcome back, {name}"
+  },
+  "api_errors": {
+    "invalid_credentials": "Invalid email or password",
+    "invalid_credentials_warning": "Invalid email or password. Further failed attempts will temporarily block sign-in from your network",
+    "user_account_is_not_active": "This account is not active. Contact an administrator",
+    "too_many_login_attempts": "Too many failed attempts. Try again later",
+    "ip_temporarily_blocked": "Sign-in from your network is temporarily blocked. Try again later",
+    "too_many_requests": "Too many requests. Slow down and try again",
+    "recaptcha_verification_failed": "Verification failed. Reload the page and try again",
+    "timeout": "The server took too long to respond. Try again",
+    "unreachable": "The server cannot be reached. Try again in a moment",
+    "unknown": "Something went wrong. Try again"
   },
   "validation": {
     "required": "This field is required",

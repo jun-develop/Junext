@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { $ZodRawIssue } from 'zod/v4/core';
+import { type Translator, translateKey } from '@/core/i18n';
 
 /**
  * Zod configured so every issue message is a translation key plus params, encoded as JSON.
@@ -68,15 +69,10 @@ export function decodeIssue(message: string): IssueMessage {
   return { key: message };
 }
 
-type Translator = {
-  (key: string, params?: Record<string, string | number>): string;
-  has: (key: string) => boolean;
-};
-
 /** Translates a zod issue message; unknown keys (e.g. server text) are shown as-is. */
 export function translateIssue(message: string, t: Translator): string {
   const { key, params } = decodeIssue(message);
-  return t.has(key) ? t(key, params) : message;
+  return translateKey(t, key, params) ?? message;
 }
 
 export { z };

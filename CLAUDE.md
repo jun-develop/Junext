@@ -33,6 +33,7 @@ Mandatory. If a request conflicts with these rules or the architecture, ask inst
 - A feature lives in `src/features/<feature>/` with `messages/en.json` and `messages/vi.json` (the architecture and i18n tests already expect this).
 - `src/lib/`, `src/hooks/`, `src/components/` are shared and never import `src/features/` or `src/app/` (architecture test).
 - Only the server calls Jungo; the browser never calls it directly. Server-only modules start with `import 'server-only'`.
+- Call Jungo through `jungo` from `@/lib/jungo` (it adds the session token and the browser's IP) and `unwrap()` the result. Protected pages and server actions call `requireSession()` themselves; `src/proxy.ts` only refreshes tokens and redirects.
 - No circular imports. Shared logic used by two features moves to `src/core/` (logic) or `src/components/` (UI), never copied.
 - Add a layer, wrapper or generic helper only when a second real caller exists.
 

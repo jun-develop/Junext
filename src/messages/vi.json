@@ -2,9 +2,21 @@
   "common": {
     "app_name": "Junext"
   },
-  "home": {
-    "title": "Junext đang chạy",
-    "description": "Đăng nhập và các tính năng sẽ có ở bước tiếp theo."
+  "dashboard": {
+    "title": "Tổng quan",
+    "greeting": "Chào mừng trở lại, {name}"
+  },
+  "api_errors": {
+    "invalid_credentials": "Email hoặc mật khẩu không đúng",
+    "invalid_credentials_warning": "Email hoặc mật khẩu không đúng. Nếu tiếp tục sai, đăng nhập từ mạng của bạn sẽ bị tạm khoá",
+    "user_account_is_not_active": "Tài khoản chưa được kích hoạt. Hãy liên hệ quản trị viên",
+    "too_many_login_attempts": "Đăng nhập sai quá nhiều lần. Hãy thử lại sau",
+    "ip_temporarily_blocked": "Đăng nhập từ mạng của bạn đang bị tạm khoá. Hãy thử lại sau",
+    "too_many_requests": "Quá nhiều yêu cầu. Hãy chậm lại rồi thử lại",
+    "recaptcha_verification_failed": "Xác minh thất bại. Hãy tải lại trang và thử lại",
+    "timeout": "Máy chủ phản hồi quá lâu. Hãy thử lại",
+    "unreachable": "Không kết nối được máy chủ. Hãy thử lại sau ít phút",
+    "unknown": "Đã có lỗi xảy ra. Hãy thử lại"
   },
   "validation": {
     "required": "Trường này là bắt buộc",

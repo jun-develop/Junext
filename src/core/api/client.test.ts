@@ -84,6 +84,17 @@ describe('unwrap', () => {
     expect(error.fieldErrors).toEqual({});
   });
 
+  it('sends a URL and a buffered body, never a Request (Next rebuilds those with a stream body)', async () => {
+    const fetchMock = respondWith(200, '{"status":"success","data":{"pong":true}}');
+
+    await ping();
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      'http://jungo.test/ping',
+      expect.objectContaining({ method: 'GET' }),
+    );
+  });
+
   it('falls back to generic values when the body is not a Jungo envelope', async () => {
     respondWith(502, '<html>Bad Gateway</html>');
 
@@ -94,7 +105,7 @@ describe('unwrap', () => {
   it('turns a slow response into a timeout error', async () => {
     vi.stubGlobal(
       'fetch',
-      (_: Request, init: RequestInit) =>
+      (_: string, init: RequestInit) =>
         new Promise((_resolve, reject) => {
           init.signal?.addEventListener('abort', () => reject(init.signal?.reason));
         }),
