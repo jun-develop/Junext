@@ -19,6 +19,7 @@ Next.js admin template for the Jungo API.
 ## Commands
 
 `make check` runs lint, typecheck, format check and tests.
+`pnpm api:types` regenerates `src/lib/jungo-schema.d.ts` from the running Jungo's OpenAPI spec (override with `JUNGO_OPENAPI_URL`); commit the result.
 
 ## Code Style
 

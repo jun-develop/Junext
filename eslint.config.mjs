@@ -21,5 +21,5 @@ export default defineConfig([
     files: ['src/components/ui/**', '**/*.test.{ts,tsx}', 'tests/**'],
     rules: { 'react/jsx-no-literals': 'off' },
   },
-  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
+  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts', 'src/lib/jungo-schema.d.ts']),
 ]);
